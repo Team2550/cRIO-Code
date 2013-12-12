@@ -1,0 +1,9 @@
+This is the Team 2550 code repository... 
+In order to work with this code in WindRiver:
+1) Set this directory as the workspace (file>switch workspace or choose at launch)
+2) bring up the import dialog (file>import)
+3) Choose the option "General->Exising Projects into Workspace"
+4) Choose this directory as the root directory
+5) Make sure the Copy projects into workspace option is not set
+6) Repeat this whenever a new project has been added to the workspace,
+	you will know if there is a new directory when you pull from the server

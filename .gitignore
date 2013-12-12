@@ -1,0 +1,9 @@
+#ignore thumbnails created by windows
+Thumbs.db
+
+#ignore backups created by some editors
+~*
+
+#Files created by WindRiver
+.metadata
+PPC603gnu
