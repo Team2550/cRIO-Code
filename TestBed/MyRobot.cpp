@@ -1,55 +1,40 @@
-#include "WPILib.h"
+/*
+ * AUTHOR: Caleb Reister
+ * EMAIL: calebreister@gmail.com
+ * DATE: 2013-12-16
+ * DEV ENV: WindRiver
+ * TEMPLATE: SimpleRobot
+ * DESCRIPTION:
+ * 	This is a program for the Team 2550 test bed used for the purpose of training
+ * 	programmers.
+ */
 
-/**
- * This is a demo program showing the use of the RobotBase class.
- * The SimpleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls.
- */ 
-class RobotDemo : public SimpleRobot
+#include "MyRobot.h"
+
+TestBed::TestBed(void)//initialization function
 {
-	RobotDrive myRobot; // robot drive system
-	Joystick stick; // only joystick
+	GetWatchdog().SetEnabled(false);
+	DriveSys = new drive();
+}
 
-public:
-	RobotDemo(void):
-		myRobot(1, 2),	// these must be initialized in the same order
-		stick(1)		// as they are declared above.
+/*void TestBed::Autonomous(void)
+{
+	//not yet implemented
+}*/
+
+void TestBed::OperatorControl(void)
+{
+	while (IsOperatorControl())
 	{
-		myRobot.SetExpiration(0.1);
+		DriveSys->RemoteDrive();
+		Wait(0.005);// wait for a motor update time
 	}
+}
 
-	/**
-	 * Drive left & right motors for 2 seconds then stop
-	 */
-	void Autonomous(void)
-	{
-		myRobot.SetSafetyEnabled(false);
-		myRobot.Drive(-0.5, 0.0); 	// drive forwards half speed
-		Wait(2.0); 				//    for 2 seconds
-		myRobot.Drive(0.0, 0.0); 	// stop robot
-	}
+TestBed::~TestBed(void)
+{
+	delete DriveSys;
+}
 
-	/**
-	 * Runs the motors with arcade steering. 
-	 */
-	void OperatorControl(void)
-	{
-		myRobot.SetSafetyEnabled(true);
-		while (IsOperatorControl())
-		{
-			myRobot.ArcadeDrive(stick); // drive with arcade style (use right stick)
-			Wait(0.005);				// wait for a motor update time
-		}
-	}
-	
-	/**
-	 * Runs during test mode
-	 */
-	void Test() {
-
-	}
-};
-
-START_ROBOT_CLASS(RobotDemo);
+START_ROBOT_CLASS(TestBed);
 

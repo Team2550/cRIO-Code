@@ -240,9 +240,9 @@
         </mapAttribute>
     </attributes>
     <buildtargets>
-        <buildtarget buildtool="Linker" name="BuiltinDefaultCode" passed="false" targetname="BuiltinDefaultCode">
+        <buildtarget buildtool="Linker" name="2013Code" passed="false" targetname="2013Code">
             <contents>
-                <folder name="/BuiltinDefaultCode" recursive="true"/>
+                <folder name="/2013Code" recursive="true"/>
             </contents>
         </buildtarget>
     </buildtargets>
