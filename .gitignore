@@ -4,6 +4,8 @@ Thumbs.db
 #ignore backups created by some editors
 ~*
 
-#Files created by WindRiver
+#WindRiver
+#plugin info
 .metadata
+#Object and executable files
 PPC603gnu
