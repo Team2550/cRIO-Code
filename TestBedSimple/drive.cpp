@@ -4,7 +4,7 @@ drive::drive()
 {
 	LeftStick = new Joystick(2);// 2 is port number
 	RightStick = new Joystick(1);
-	LeftMotor = new Victor(1);
+	LeftMotor = new Victor(1);//change these to ports that they are plugged into
 	RightMotor = new Victor(2);
 }
 

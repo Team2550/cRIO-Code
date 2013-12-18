@@ -11,7 +11,7 @@
 
 #include "MyRobot.h"
 
-TestBed::TestBed(void)//initialization function
+TestBed::TestBed(void)//constructor function
 {
 	GetWatchdog().SetEnabled(false);
 	DriveSys = new drive();
@@ -36,5 +36,4 @@ TestBed::~TestBed(void)
 	delete DriveSys;
 }
 
-START_ROBOT_CLASS(TestBed);
-
+START_ROBOT_CLASS(TestBed);//treat TestBed class as main()
