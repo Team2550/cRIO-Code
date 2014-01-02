@@ -9,7 +9,9 @@ class drive
 		drive();
 		~drive();
 		void RemoteDrive();
-		// AutoDrive();
+		void AutoDrive();
+		float LeftStickY;
+		float RightStickY;
 	private:
 		Joystick *LeftStick;
 		Joystick *RightStick;

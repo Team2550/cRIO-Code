@@ -9,7 +9,7 @@
  * 	programmers.
  */
 
-#include "MyRobot.h"
+#include "TestBedSimple.h"
 
 TestBed::TestBed(void)//constructor function
 {
@@ -17,16 +17,18 @@ TestBed::TestBed(void)//constructor function
 	DriveSys = new drive();
 }
 
-/*void TestBed::Autonomous(void)
+void TestBed::Autonomous(void)
 {
-	//not yet implemented
-}*/
+	DriveSys->AutoDrive();
+}
 
 void TestBed::OperatorControl(void)
 {
-	while (IsOperatorControl())
+	while (IsOperatorControl() && !IsDisabled())
 	{
 		DriveSys->RemoteDrive();
+		SmartDashboard::PutNumber("LeftStick: ", DriveSys->LeftStickY);
+		SmartDashboard::PutNumber("RightStick:", DriveSys->RightStickY);
 		Wait(0.005);// wait for a motor update time
 	}
 }
