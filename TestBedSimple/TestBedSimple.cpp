@@ -17,6 +17,11 @@ TestBed::TestBed(void)//constructor function
 	DriveSys = new drive();
 }
 
+TestBed::~TestBed(void)
+{
+	delete DriveSys;
+}
+
 void TestBed::Autonomous(void)
 {
 	DriveSys->AutoDrive();
@@ -31,11 +36,6 @@ void TestBed::OperatorControl(void)
 		SmartDashboard::PutNumber("RightStick:", DriveSys->RightStickY);
 		Wait(0.005);// wait for a motor update time
 	}
-}
-
-TestBed::~TestBed(void)
-{
-	delete DriveSys;
 }
 
 START_ROBOT_CLASS(TestBed);//treat TestBed class as main()

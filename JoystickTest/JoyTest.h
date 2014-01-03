@@ -8,5 +8,5 @@ class JoyTest : public SimpleRobot
 		~JoyTest(void);
 		void OperatorControl();
 	private:
-		Joystick *xBox;
+		Joystick *stick;
 };

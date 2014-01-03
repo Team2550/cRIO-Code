@@ -1,6 +1,5 @@
 #ifndef MYROBOT_H
 #define MYROBOT_H
-
 #include <WPILib.h>
 #include "drive.h"
 #include <NetworkTables/NetworkTable.h>

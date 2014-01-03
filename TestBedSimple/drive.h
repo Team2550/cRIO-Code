@@ -13,8 +13,7 @@ class drive
 		float LeftStickY;
 		float RightStickY;
 	private:
-		Joystick *LeftStick;
-		Joystick *RightStick;
+		Joystick *xbox;
 		Victor *LeftMotor;//motor controller
 		Victor *RightMotor;
 };

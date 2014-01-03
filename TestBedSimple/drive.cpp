@@ -2,16 +2,14 @@
 
 drive::drive()
 {
-	LeftStick = new Joystick(1);// argument is the index number of joystick
-	RightStick = new Joystick(5);
-	LeftMotor = new Victor(1);
+	xbox = new Joystick(1);// argument is the index number of joystick
+	LeftMotor = new Victor(4);
 	RightMotor = new Victor(2);
 }
 
 drive::~drive()
 {
-	delete LeftStick;
-	delete RightStick;
+	delete xbox;
 	delete LeftMotor;
 	delete RightMotor;
 }
@@ -19,15 +17,19 @@ drive::~drive()
 void drive::AutoDrive()
 {
 	LeftMotor->Set(.75);
-	Wait(5);
+	Wait(2);
 	LeftMotor->Set(0);
+	//////////////////////////
+	RightMotor->Set(.75);
+	Wait(2);
+	RightMotor->Set(0);
 }
 
 //bare bones implementation of motor control with xbox controller...
 void drive::RemoteDrive()
 {
-	LeftStickY = -LeftStick -> GetRawAxis(5);//up is negative for xbox controller axis
-	RightStickY = -RightStick -> GetRawAxis(2);
+	LeftStickY = -xbox -> GetRawAxis(1);//up is negative for xbox controller axis
+	RightStickY = -xbox -> GetRawAxis(2);
 	//moves motors
 	if (abs(LeftStickY) > 0.1)// number accounts for joystick dead zone
 		LeftMotor->Set(LeftStickY);
