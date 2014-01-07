@@ -7,7 +7,7 @@ drive::drive()
 	RightMotor = new Victor(2);
 }
 
-drive::~drive()
+drive::~drive( )
 {
 	delete xbox;
 	delete LeftMotor;
