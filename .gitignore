@@ -9,3 +9,6 @@ Thumbs.db
 .metadata
 #Object and executable files
 PPC603gnu
+
+#Project used for testing purposes
+ScratchPad
