@@ -2,7 +2,6 @@
 #define MYROBOT_H
 #include <WPILib.h>
 #include "drive.h"
-#include <NetworkTables/NetworkTable.h>
 
 class TestBed : public SimpleRobot
 {
