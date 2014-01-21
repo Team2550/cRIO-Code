@@ -19,33 +19,34 @@ Drive::~Drive()
 
 void Drive::autoDrive()
 {
-	//will eventually be programmed to go forward into team zone
-	//must be calibrated
+	//will eventually be programmed to go forward into 
+	//team zone must be calibrated
 }
 
-//CHOOSE CONTROLS FOR 2014 ROBOT W/ TEAM!!!!!!!!!!!!!!!!!!!!!
-void Drive::remoteDrive()
+void Drive::remoteDrive(Joystick* remote)
 {
-	//See documentation repository on Git server for axis mappings
-		//of xbox controller
-	LeftStickY = -xbox->GetRawAxis(1);
-	RightStickY = -xbox->GetRawAxis(2);
+	//See documentation repository on Git server for axis
+		//mappings of xbox controller
+	float leftStick = -remote->GetRawAxis(1);
+	float rightStick = -remote->GetRawAxis(2);
 	
 	//basic movements
-	if (abs(LeftStickY) > 0.1)// number accounts for joystick dead zone
+	//fabs() is the flaot version of abs()
+	if (fabs(leftStick) > 0.1)
 	{
-		Left1->Set(LeftStickY);
-		Left2->Set(LeftStickY);
+		// number accounts for joystick dead zone
+		Left1->Set(leftStick);
+		Left2->Set(leftStick);
 	}
 	else
 	{
 		Left1->Set(0);
 		Left2->Set(0);
 	}
-	if (abs(RightStickY) > 0.1)
+	if (fabs(rightStick) > 0.1)
 	{
-		Right1->Set(RightStickY);
-		Right2->Set(RightStickY);
+		Right1->Set(rightStick);
+		Right2->Set(rightStick);
 	}
 	else
 	{

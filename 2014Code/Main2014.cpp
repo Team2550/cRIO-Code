@@ -1,13 +1,3 @@
-/*
- * AUTHOR: CALEB REISTER
- * EMAIL: calebreister@gmail.com
- * DATE: 2014-01-19
- * DEV ENV: Windriver
- * TEMPLATE: TestBedSimple, SimpleRobot
- * DESCRIPTION:
- * 	This is the primary code for the 2014 competition
- */
-
 #include "Main2014.h"
 
 robot::robot()
@@ -15,21 +5,23 @@ robot::robot()
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
 	GetWatchdog().SetEnabled(false);
-	DriveSys = new Drive();
+	tank = new Drive();
+	xbox = new Joystick(1);
 }
 robot::~robot()
 {
-	delete DriveSys;
+	delete tank;
 }
 
 void robot::Autonomous()
 {
 	//implement this!
+	tank->autoDrive();
 }
 
 void robot::OperatorControl()
 {
-	
+	tank->remoteDrive(xbox);
 }
 
 START_ROBOT_CLASS(robot);

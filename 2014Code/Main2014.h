@@ -1,7 +1,6 @@
 #ifndef MAIN2014_H
 #define MAIN2014_H
 #include "WPILib.h"
-#include "stick.h"
 #include "drive.h"
 
 class robot : public SimpleRobot
@@ -12,7 +11,8 @@ class robot : public SimpleRobot
 		void Autonomous();
 		void OperatorControl();
 	private:
-		Drive* DriveSys;
+		Drive* tank;
+		Joystick* xbox;
 };
 
 #endif
