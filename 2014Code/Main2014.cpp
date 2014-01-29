@@ -7,6 +7,7 @@ robot::robot()
 	GetWatchdog().SetEnabled(false);
 	tank = new Drive();
 	xbox = new Joystick(1);
+	launcher = new DoublePiston(1,2,3,4);
 }
 robot::~robot()
 {
@@ -21,6 +22,7 @@ void robot::Autonomous()
 
 void robot::OperatorControl()
 {
+	launcher->pull();
 	tank->remoteDrive(xbox);
 }
 

@@ -2,6 +2,7 @@
 #define MAIN2014_H
 #include "WPILib.h"
 #include "drive.h"
+#include "DoublePiston.h"
 
 class robot : public SimpleRobot
 {
@@ -11,8 +12,10 @@ class robot : public SimpleRobot
 		void Autonomous();
 		void OperatorControl();
 	private:
-		Drive* tank;
+		//point to WPILib classes
 		Joystick* xbox;
+		Drive* tank;
+		DoublePiston* launcher;
 };
 
 #endif
