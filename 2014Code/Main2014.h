@@ -11,10 +11,13 @@ class robot : public SimpleRobot
 		~robot();//destructor
 		void Autonomous();
 		void OperatorControl();
-	private:
-		//point to WPILib classes
+	private:		
+		//CONTROL
 		Joystick* xbox;
 		Drive* tank;
+		
+		//PNEUMATICS
+		Relay* compressor;
 		DoublePiston* launcher;
 };
 

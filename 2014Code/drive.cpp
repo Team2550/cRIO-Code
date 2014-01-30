@@ -10,7 +10,6 @@ Drive::Drive()
 }
 Drive::~Drive()
 {
-	//motor deletion
 	delete Left1;
 	delete Left2;
 	delete Right1;
@@ -19,8 +18,6 @@ Drive::~Drive()
 
 void Drive::autoDrive()
 {
-	//will eventually be programmed to go forward into 
-	//team zone must be calibrated
 }
 
 void Drive::remoteDrive(Joystick* remote)
