@@ -3,23 +3,37 @@
 Drive::Drive()
 {
 	//motor creation
-	Left1 = new Jaguar(1);
-	Left2 = new Jaguar(2);
-	Right1 = new Jaguar(3);
-	Right2 = new Jaguar(4);
+	Left = new Jaguar(1);
+	Right = new Jaguar(3);
 }
 Drive::~Drive()
 {
-	delete Left1;
-	delete Left2;
-	delete Right1;
-	delete Right2;
+	delete Left;
+	delete Right;
 }
 
+/*
+ * FUNCTION: autoDrive
+ * AUTHOR: Caleb Reister
+ * DESCRIPTION:
+ * 	autoDrive runs any drivetrain-related
+ * 	movements during the autonomous period of
+ * 	the match.
+ */
 void Drive::autoDrive()
 {
 }
 
+/*
+ * FUNCTION: remoteDrive
+ * AUTHOR: Caleb Reister
+ * DESCRIPTION:
+ * 	Handles movement based on joystick input.
+ * 	Currently configured for xbox controllers.
+ * PARAMETERS:
+ * 	(I) remote - the joystick to use for input
+ * 		pointed due to WPILib size
+ */
 void Drive::remoteDrive(Joystick* remote)
 {
 	//See documentation repository on Git server for axis
@@ -28,26 +42,13 @@ void Drive::remoteDrive(Joystick* remote)
 	float rightStick = -remote->GetRawAxis(2);
 	
 	//basic movements
-	//fabs() is the flaot version of abs()
-	if (fabs(leftStick) > 0.1)
-	{
-		// number accounts for joystick dead zone
-		Left1->Set(leftStick);
-		Left2->Set(leftStick);
-	}
+	//fabs() is the float version of abs()
+	if (fabs(leftStick) > 0.1)//number accounts for dead zone
+		Left->Set(leftStick);
 	else
-	{
-		Left1->Set(0);
-		Left2->Set(0);
-	}
+		Left->Set(0);
 	if (fabs(rightStick) > 0.1)
-	{
-		Right1->Set(rightStick);
-		Right2->Set(rightStick);
-	}
+		Right->Set(rightStick);
 	else
-	{
-		Right1->Set(0);
-		Right2->Set(0);
-	}
+		Right->Set(0);
 }
