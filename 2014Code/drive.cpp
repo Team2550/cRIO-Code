@@ -4,7 +4,7 @@ Drive::Drive()
 {
 	//motor creation
 	Left = new Jaguar(1);
-	Right = new Jaguar(3);
+	Right = new Jaguar(2);
 }
 Drive::~Drive()
 {
@@ -38,17 +38,17 @@ void Drive::remoteDrive(Joystick* remote)
 {
 	//See documentation repository on Git server for axis
 		//mappings of xbox controller
-	float leftStick = -remote->GetRawAxis(1);
-	float rightStick = -remote->GetRawAxis(2);
+	float leftStick = remote->GetRawAxis(2);
+	float rightStick = remote->GetRawAxis(5);
 	
 	//basic movements
 	//fabs() is the float version of abs()
-	if (fabs(leftStick) > 0.1)//number accounts for dead zone
-		Left->Set(leftStick);
+	if (fabs(leftStick) > 0.2)//number accounts for dead zone
+		Left->Set(-leftStick * .25);
 	else
 		Left->Set(0);
-	if (fabs(rightStick) > 0.1)
-		Right->Set(rightStick);
+	if (fabs(rightStick) > 0.2)
+		Right->Set(rightStick * .25);
 	else
 		Right->Set(0);
 }

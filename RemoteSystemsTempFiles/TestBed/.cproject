@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 5.0.0?>
+<?fileVersion 4.0.0?>
 
-<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage2">
+<cproject>
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="org.eclipse.cdt.core.default.config.49153356">
-			<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.49153356" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
+		<cconfiguration id="org.eclipse.cdt.core.default.config.283967106">
+			<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.283967106" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
 				<externalSettings/>
 				<extensions>
 					<extension id="com.windriver.ide.core.WRScannerInfoProvider" point="org.eclipse.cdt.core.ScannerInfoProvider"/>
@@ -18,6 +18,11 @@
 				<pathentry kind="out" path=""/>
 				<pathentry kind="con" path="com.windriver.ide.core.WR_CONTAINER"/>
 				<pathentry kind="con" path="com.windriver.ide.core.build.model.WR_USERDEFINED_CONTAINER"/>
+			</storageModule>
+			<storageModule moduleId="scannerConfiguration"/>
+			<storageModule moduleId="userdefinedContainer">
+				<indexAllFiles value="false"/>
+				<initialized value="true"/>
 			</storageModule>
 		</cconfiguration>
 	</storageModule>
