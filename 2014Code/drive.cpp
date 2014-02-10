@@ -31,15 +31,15 @@ void Drive::autoDrive()
  * 	Handles movement based on joystick input.
  * 	Currently configured for xbox controllers.
  * PARAMETERS:
- * 	(I) remote - the joystick to use for input
+ * 	(I) stick - the joystick to use for input
  * 		pointed due to WPILib size
  */
-void Drive::remoteDrive(Joystick* remote)
+void Drive::remoteDrive(Joystick* stick)
 {
 	//See documentation repository on Git server for axis
 		//mappings of xbox controller
-	float leftStick = remote->GetRawAxis(2);
-	float rightStick = remote->GetRawAxis(5);
+	float leftStick = stick->GetRawAxis(2);
+	float rightStick = stick->GetRawAxis(5);
 	
 	//basic movements
 	//fabs() is the float version of abs()

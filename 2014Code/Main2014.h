@@ -17,7 +17,7 @@ class robot : public SimpleRobot
 		Drive* tank;
 		
 		//PNEUMATICS
-		Relay* compressor;
+		Compressor* comp; //short for compressor
 		DoublePiston* launcher;
 };
 

@@ -10,7 +10,7 @@ class Drive
 		~Drive();
 
 		void autoDrive();
-		void remoteDrive(Joystick* remote);
+		void remoteDrive(Joystick* stick);
 	private:
 		//left and right drive motors
 		Jaguar* Left;

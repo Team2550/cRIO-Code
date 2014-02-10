@@ -9,32 +9,33 @@ robot::robot()
 	xbox = new Joystick(1);
 	tank = new Drive();
 	//PNEUMATICS
-	compressor = new Relay(1);//FINALIZE PORT
-	launcher = new DoublePiston(1,2,3,4);
+	comp = new Compressor(1, 1);//REMINDER: CONFIRM PORTS
+	launcher = new DoublePiston(1, 2, 3, 4);
 }
 robot::~robot()
 {
 	delete xbox;
 	delete tank;
-	delete compressor;
+	delete comp;
 	delete launcher;
 }
 
 void robot::Autonomous()
 {
-	compressor->Set(Relay::kOn);
-	launcher->push();//prime catapult
-	
+	comp->Start();
 	tank->autoDrive();//Not yet implemented
 }
 
 void robot::OperatorControl()
 {
+	launcher->push();//prime catapult
+	
 	while (IsOperatorControl())
 	{
 		tank->remoteDrive(xbox);
+		
 		//launch catapult
-		if (xbox->GetRawButton(6))//check RB on xbox
+		if (xbox->GetRawButton(6))//check RB on xbox remote
 			launcher->pull();
 		//reprime catapult
 		if (xbox->GetRawButton(5))//check LB
@@ -42,7 +43,7 @@ void robot::OperatorControl()
 	}
 	
 	launcher->off();
-	compressor->Set(Relay::kOff);
+	comp->Stop();
 }
 
 START_ROBOT_CLASS(robot);
