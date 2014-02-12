@@ -9,7 +9,7 @@ robot::robot()
 	xbox = new Joystick(1);
 	tank = new Drive();
 	//PNEUMATICS
-	comp = new Compressor(1, 1);//REMINDER: CONFIRM PORTS
+	comp = new Compressor(1, 2);
 	launcher = new DoublePiston(1, 2, 3, 4);
 }
 robot::~robot()
@@ -23,23 +23,32 @@ robot::~robot()
 void robot::Autonomous()
 {
 	comp->Start();
-	tank->autoDrive();//Not yet implemented
+	//tank->autoDrive();//Not yet implemented
 }
 
 void robot::OperatorControl()
-{
-	launcher->push();//prime catapult
-	
+{	
 	while (IsOperatorControl())
-	{
+	{	
+		comp->Start();
+		SmartDashboard::PutNumber("Compressor:", comp->GetPressureSwitchValue());
+		
 		tank->remoteDrive(xbox);
 		
 		//launch catapult
 		if (xbox->GetRawButton(6))//check RB on xbox remote
+		{
+			//NOTE: REVERSE PUSH AND PULL
 			launcher->pull();
+			SmartDashboard::PutString("Launcher:", "PULL");
+		}
 		//reprime catapult
 		if (xbox->GetRawButton(5))//check LB
+		{
 			launcher->push();
+			SmartDashboard::PutString("Launcher:", "PUSH");
+		}
+
 	}
 	
 	launcher->off();
