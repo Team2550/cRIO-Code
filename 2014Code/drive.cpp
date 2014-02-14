@@ -38,8 +38,8 @@ void Drive::remoteDrive(Joystick* stick)
 {
 	//See documentation repository on Git server for axis
 		//mappings of xbox controller
-	float leftStick = stick->GetRawAxis(2);
-	float rightStick = stick->GetRawAxis(5);
+	float leftStick = stick->GetRawAxis(xbox::axis::leftY);
+	float rightStick = stick->GetRawAxis(xbox::axis::rightY);
 	
 	//basic movements
 	//fabs() is the float version of abs()
@@ -51,4 +51,5 @@ void Drive::remoteDrive(Joystick* stick)
 		Right->Set(rightStick * .25);
 	else
 		Right->Set(0);
+	delete stick;
 }

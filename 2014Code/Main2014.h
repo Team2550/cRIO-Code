@@ -1,8 +1,10 @@
 #ifndef MAIN2014_H
 #define MAIN2014_H
 #include "WPILib.h"
+#include "xBox.h"
 #include "drive.h"
-#include "DoublePiston.h"
+#include "DoubleSolenoid.h"
+#include "launcher.h"
 
 class robot : public SimpleRobot
 {
@@ -11,6 +13,7 @@ class robot : public SimpleRobot
 		~robot();//destructor
 		void Autonomous();
 		void OperatorControl();
+		void dashSend();
 	private:		
 		//CONTROL
 		Joystick* xbox;
@@ -18,7 +21,7 @@ class robot : public SimpleRobot
 		
 		//PNEUMATICS
 		Compressor* comp; //short for compressor
-		DoublePiston* launcher;
+		launcher* pult; //short for catapult
 };
 
 #endif

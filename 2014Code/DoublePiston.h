@@ -1,5 +1,5 @@
-#ifndef LAUNCHER_H
-#define LAUNCHER_H
+#ifndef D_PISTON_H
+#define D_PISTON_H
 #include "WPILib.h"
 
 //class for controlling 2 (bidirectional) pneumatic pistons
@@ -9,12 +9,14 @@ class DoublePiston
 		DoublePiston(const int port1, const int port2,
 				const int port3, const int port4);
 		~DoublePiston();
+		std::string getStatus();
+		void off();
 		void push();
 		void pull();
-		void off();
 	private:
 		DoubleSolenoid* a;
 		DoubleSolenoid* b;
+		std::string status;
 };
 
 #endif

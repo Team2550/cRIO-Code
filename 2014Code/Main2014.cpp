@@ -10,14 +10,14 @@ robot::robot()
 	tank = new Drive();
 	//PNEUMATICS
 	comp = new Compressor(1, 2);
-	launcher = new DoublePiston(1, 2, 3, 4);
+	pult = new launcher();
 }
 robot::~robot()
 {
 	delete xbox;
 	delete tank;
 	delete comp;
-	delete launcher;
+	delete pult;
 }
 
 void robot::Autonomous()
@@ -27,32 +27,23 @@ void robot::Autonomous()
 }
 
 void robot::OperatorControl()
-{	
+{
+	comp->Start();
 	while (IsOperatorControl())
 	{	
-		comp->Start();
-		SmartDashboard::PutNumber("Compressor:", comp->GetPressureSwitchValue());
-		
 		tank->remoteDrive(xbox);
-		
-		//launch catapult
-		if (xbox->GetRawButton(6))//check RB on xbox remote
-		{
-			//NOTE: REVERSE PUSH AND PULL
-			launcher->pull();
-			SmartDashboard::PutString("Launcher:", "PULL");
-		}
-		//reprime catapult
-		if (xbox->GetRawButton(5))//check LB
-		{
-			launcher->push();
-			SmartDashboard::PutString("Launcher:", "PUSH");
-		}
-
+		pult->set(xbox);
+		dashSend();
 	}
 	
-	launcher->off();
+	pult->off();
 	comp->Stop();
+}
+
+void robot::dashSend()
+{
+	SmartDashboard::PutBoolean("Compressor:", comp->GetPressureSwitchValue());
+	SmartDashboard::PutString("Launcher:", pult->getStatus());
 }
 
 START_ROBOT_CLASS(robot);

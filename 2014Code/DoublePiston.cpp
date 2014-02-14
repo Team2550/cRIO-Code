@@ -17,16 +17,24 @@ void DoublePiston::push()
 {
 	a->Set(DoubleSolenoid::kForward);
 	b->Set(DoubleSolenoid::kForward);
+	status = "PUSH";
 }
 
 void DoublePiston::pull()
 {
 	a->Set(DoubleSolenoid::kReverse);
 	b->Set(DoubleSolenoid::kReverse);
+	status = "PULL";
 }
 
 void DoublePiston::off()
 {
 	a->Set(DoubleSolenoid::kOff);
 	b->Set(DoubleSolenoid::kOff);
+	status = "VENT";
+}
+
+std::string DoublePiston::getStatus()
+{
+	return status;
 }

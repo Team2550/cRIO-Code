@@ -1,7 +1,8 @@
 #ifndef DRIVE_H
 #define DRIVE_H
+#include <math.h>
 #include "WPILib.h"
-#include <cmath>
+#include "xBox.h"
 
 class Drive
 {
