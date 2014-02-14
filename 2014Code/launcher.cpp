@@ -29,7 +29,6 @@ void launcher::set(Joystick* stick)
 		pistons->off();
 	if (stick->GetRawButton(xbox::btn::x))
 		trigger->Set(DoubleSolenoid::kReverse);
-	delete stick;
 }
 
 void launcher::off()

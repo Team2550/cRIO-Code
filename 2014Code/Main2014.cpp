@@ -22,7 +22,7 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	comp->Start();
+	//comp->Start();
 	//tank->autoDrive();//Not yet implemented
 }
 

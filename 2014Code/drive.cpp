@@ -44,12 +44,11 @@ void Drive::remoteDrive(Joystick* stick)
 	//basic movements
 	//fabs() is the float version of abs()
 	if (fabs(leftStick) > 0.2)//number accounts for dead zone
-		Left->Set(-leftStick * .25);
+		Left->Set(-leftStick * 1);
 	else
 		Left->Set(0);
 	if (fabs(rightStick) > 0.2)
-		Right->Set(rightStick * .25);
+		Right->Set(rightStick * 1);
 	else
 		Right->Set(0);
-	delete stick;
 }
