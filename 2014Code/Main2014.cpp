@@ -6,7 +6,8 @@ robot::robot()
 	//I have left it disabled for testing
 	GetWatchdog().SetEnabled(false);
 	//CONTROL
-	xbox = new Joystick(1);
+	driver = new Joystick(1);
+	pultControl = new Joystick(2);
 	tank = new Drive();
 	//PNEUMATICS
 	comp = new Compressor(1, 2);
@@ -14,7 +15,8 @@ robot::robot()
 }
 robot::~robot()
 {
-	delete xbox;
+	delete driver;
+	delete pultControl;
 	delete tank;
 	delete comp;
 	delete pult;
@@ -31,8 +33,8 @@ void robot::OperatorControl()
 	comp->Start();
 	while (IsOperatorControl())
 	{	
-		tank->remoteDrive(xbox);
-		pult->set(xbox);
+		tank->remoteDrive(driver);
+		pult->set(pultControl);
 		dashSend();
 	}
 	

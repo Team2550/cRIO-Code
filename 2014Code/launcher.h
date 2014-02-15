@@ -3,12 +3,12 @@
 
 #include "WPILib.h"
 #include "xBox.h"
-#include "DoubleSolenoid.h"
 #include "DoublePiston.h"
 
 class launcher
 {
 	private:
+		//Joystick* stick;
 		DoublePiston* pistons;
 		DoubleSolenoid* trigger;
 	public:

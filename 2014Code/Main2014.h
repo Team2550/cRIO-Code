@@ -16,7 +16,8 @@ class robot : public SimpleRobot
 		void dashSend();
 	private:		
 		//CONTROL
-		Joystick* xbox;
+		Joystick* driver;
+		Joystick* pultControl;
 		Drive* tank;
 		
 		//PNEUMATICS
