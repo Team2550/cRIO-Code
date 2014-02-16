@@ -13,14 +13,14 @@ DoublePiston::~DoublePiston()
 	delete b;
 }
 
-void DoublePiston::push()
+void DoublePiston::fwd()
 {
 	a->Set(DoubleSolenoid::kForward);
 	b->Set(DoubleSolenoid::kForward);
 	status = "PUSH";
 }
 
-void DoublePiston::pull()
+void DoublePiston::back()
 {
 	a->Set(DoubleSolenoid::kReverse);
 	b->Set(DoubleSolenoid::kReverse);

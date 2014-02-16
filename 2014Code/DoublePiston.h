@@ -11,8 +11,8 @@ class DoublePiston
 		~DoublePiston();
 		std::string getStatus();
 		void off();
-		void push();
-		void pull();
+		void fwd();
+		void back();
 	private:
 		DoubleSolenoid* a;
 		DoubleSolenoid* b;

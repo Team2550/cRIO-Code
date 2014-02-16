@@ -1,13 +1,15 @@
 #include "drive.h"
 
-Drive::Drive()
+Drive::Drive(const int stickPort)
 {
+	stick = new Joystick(stickPort);
 	//motor creation
 	Left = new Jaguar(1);
 	Right = new Jaguar(2);
 }
 Drive::~Drive()
 {
+	delete stick; 
 	delete Left;
 	delete Right;
 }
@@ -34,7 +36,7 @@ void Drive::autoDrive()
  * 	(I) stick - the joystick to use for input
  * 		pointed due to WPILib size
  */
-void Drive::remoteDrive(Joystick* stick)
+void Drive::remoteDrive()
 {
 	//See documentation repository on Git server for axis
 		//mappings of xbox controller

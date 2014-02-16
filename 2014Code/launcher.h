@@ -11,10 +11,11 @@ class launcher
 		//Joystick* stick;
 		DoublePiston* pistons;
 		DoubleSolenoid* trigger;
+		Joystick* stick;
 	public:
-		launcher();
+		launcher(const int stickPort);
 		~launcher();
-		void set(Joystick* stick);
+		void set();
 		void off();
 		std::string getStatus();
 };

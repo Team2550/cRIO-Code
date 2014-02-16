@@ -3,9 +3,12 @@
 #include "WPILib.h"
 #include "xBox.h"
 #include "drive.h"
-#include "DoubleSolenoid.h"
 #include "launcher.h"
+#include "lift.h"
 
+const int DRIVER_PORT = 1;
+const int PULT_CTRL_PORT = 2;
+		
 class robot : public SimpleRobot
 {
 	public:
@@ -17,8 +20,11 @@ class robot : public SimpleRobot
 	private:		
 		//CONTROL
 		Joystick* driver;
-		Joystick* pultControl;
+		Joystick* pultCtrl;
+		
+		//motors
 		Drive* tank;
+		lift* elToro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS
 		Compressor* comp; //short for compressor

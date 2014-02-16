@@ -6,18 +6,23 @@ robot::robot()
 	//I have left it disabled for testing
 	GetWatchdog().SetEnabled(false);
 	//CONTROL
-	driver = new Joystick(1);
-	pultControl = new Joystick(2);
-	tank = new Drive();
+	driver = new Joystick(DRIVER_PORT);
+	pultCtrl = new Joystick(PULT_CTRL_PORT);
+	
+	//MOTORS
+	tank = new Drive(DRIVER_PORT);
+	elToro = new lift(PULT_CTRL_PORT);
+
 	//PNEUMATICS
-	comp = new Compressor(1, 2);
-	pult = new launcher();
+	comp = new Compressor(1, 1);
+	pult = new launcher(PULT_CTRL_PORT);
 }
 robot::~robot()
 {
 	delete driver;
-	delete pultControl;
+	delete pultCtrl;
 	delete tank;
+	delete elToro;
 	delete comp;
 	delete pult;
 }
@@ -33,8 +38,9 @@ void robot::OperatorControl()
 	comp->Start();
 	while (IsOperatorControl())
 	{	
-		tank->remoteDrive(driver);
-		pult->set(pultControl);
+		tank->remoteDrive();
+		elToro->run();
+		pult->set();
 		dashSend();
 	}
 	
@@ -46,6 +52,7 @@ void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor:", comp->GetPressureSwitchValue());
 	SmartDashboard::PutString("Launcher:", pult->getStatus());
+	SmartDashboard::PutString("Lift:", elToro->getStatus());
 }
 
 START_ROBOT_CLASS(robot);

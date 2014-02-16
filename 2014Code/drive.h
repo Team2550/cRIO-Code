@@ -7,12 +7,13 @@
 class Drive
 {
 	public:
-		Drive();
+		Drive(const int stickPort);
 		~Drive();
 
 		void autoDrive();
-		void remoteDrive(Joystick* stick);
+		void remoteDrive();
 	private:
+		Joystick* stick;
 		//left and right drive motors
 		Jaguar* Left;
 		Jaguar* Right;
