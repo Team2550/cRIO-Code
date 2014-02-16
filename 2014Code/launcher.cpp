@@ -14,7 +14,7 @@ launcher::~launcher()
 	delete stick;
 	delete pistons;
 	delete trigger;
-}
+} 
 
 void launcher::set()
 {
