@@ -59,6 +59,10 @@ void robot::dashSend()
 	SmartDashboard::PutString("Launcher", pult->getStatus());
 	SmartDashboard::PutString("Lift", elToro->getStatus());
 	SmartDashboard::PutNumber("Ultrasonic", sonic->GetRangeInches());
+	SmartDashboard::PutNumber("Left Motors",
+			driver->GetRawAxis(xbox::axis::leftY));
+	SmartDashboard::PutNumber("Right Motors",
+			driver->GetRawAxis(xbox::axis::rightY));
 }
 
 START_ROBOT_CLASS(robot);
