@@ -23,7 +23,7 @@ class robot : public SimpleRobot
 		Joystick* pultCtrl;
 		
 		//motors
-		Drive* tank;
+		Drive* move;
 		lift* elToro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS

@@ -12,11 +12,13 @@ class Drive
 
 		void autoDrive();
 		void remoteDrive();
+		float getSpeedMult();
 	private:
 		Joystick* stick;
 		//left and right drive motors
-		Jaguar* Left;
-		Jaguar* Right;
+		Jaguar* left;
+		Jaguar* right;
+		float speedMult;//speed multiplier
 };
 
 #endif

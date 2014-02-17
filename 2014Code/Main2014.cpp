@@ -10,7 +10,7 @@ robot::robot()
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
-	tank = new Drive(DRIVER_PORT);
+	move = new Drive(DRIVER_PORT);
 	elToro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
@@ -25,7 +25,7 @@ robot::~robot()
 {
 	delete driver;
 	delete pultCtrl;
-	delete tank;
+	delete move;
 	delete elToro;
 	delete comp;
 	delete pult;
@@ -35,7 +35,7 @@ robot::~robot()
 void robot::Autonomous()
 {
 	//comp->Start();
-	//tank->autoDrive();//Not yet implemented
+	//move->autoDrive();//Not yet implemented
 }
 
 void robot::OperatorControl()
@@ -43,7 +43,7 @@ void robot::OperatorControl()
 	comp->Start();
 	while (IsOperatorControl())
 	{	
-		tank->remoteDrive();
+		move->remoteDrive();
 		elToro->run();
 		pult->set();
 		dashSend();
@@ -63,6 +63,7 @@ void robot::dashSend()
 			driver->GetRawAxis(xbox::axis::leftY));
 	SmartDashboard::PutNumber("Right Motors",
 			driver->GetRawAxis(xbox::axis::rightY));
+	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 }
 
 START_ROBOT_CLASS(robot);
