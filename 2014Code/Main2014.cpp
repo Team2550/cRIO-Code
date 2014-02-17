@@ -56,13 +56,16 @@ void robot::OperatorControl()
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
-	SmartDashboard::PutString("Launcher", pult->getStatus());
-	SmartDashboard::PutString("Lift", elToro->getStatus());
+	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
+	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
+	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+	
 	SmartDashboard::PutNumber("Ultrasonic", sonic->GetRangeInches());
+	
 	SmartDashboard::PutNumber("Left Motors",
-			driver->GetRawAxis(xbox::axis::leftY));
+			-driver->GetRawAxis(xbox::axis::leftY));
 	SmartDashboard::PutNumber("Right Motors",
-			driver->GetRawAxis(xbox::axis::rightY));
+			-driver->GetRawAxis(xbox::axis::rightY));
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 }
 

@@ -11,12 +11,10 @@ class lift
 		Joystick* stick;
 		Victor* a;
 		Victor* b;
-		std::string status;
 	public:
 		lift(const int stickPort);
 		~lift();
 		void run();
-		std::string getStatus();
 };
 
 #endif
