@@ -29,6 +29,9 @@ class robot : public SimpleRobot
 		//PNEUMATICS
 		Compressor* comp; //short for compressor
 		launcher* pult; //short for catapult
+		
+		//ULTRASONIC
+		Ultrasonic* sonic;
 };
 
 #endif
