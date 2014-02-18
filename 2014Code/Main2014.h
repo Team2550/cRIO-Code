@@ -16,6 +16,7 @@ class robot : public SimpleRobot
 		~robot();//destructor
 		void Autonomous();
 		void OperatorControl();
+		void feed();
 		void dashSend();
 	private:		
 		//CONTROL

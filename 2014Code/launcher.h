@@ -15,7 +15,8 @@ class launcher
 	public:
 		launcher(const int stickPort);
 		~launcher();
-		void set();
+		void autoLaunch();
+		void remoteLaunch();
 		void off();
 		std::string getStatus();
 };

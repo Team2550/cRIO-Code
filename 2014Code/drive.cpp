@@ -25,6 +25,9 @@ Drive::~Drive()
  */
 void Drive::autoDrive()
 {
+	left->Set(.5);
+	right->Set(.5);
+	Wait(3);
 }
 
 /*

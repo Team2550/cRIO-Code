@@ -16,7 +16,16 @@ launcher::~launcher()
 	delete trigger;
 } 
 
-void launcher::set()
+void launcher::autoLaunch()
+{
+	trigger->Set(DoubleSolenoid::kReverse);
+	Wait(.1);
+	pistons->fwd();
+	Wait(.5);
+	trigger->Set(DoubleSolenoid::kForward);
+}
+
+void launcher::remoteLaunch()
 {
 	//prime catapult
 	if (stick->GetRawButton(xbox::btn::rb))

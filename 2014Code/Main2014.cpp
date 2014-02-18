@@ -4,7 +4,7 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
-	GetWatchdog().SetEnabled(false);
+	feed();
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
@@ -16,10 +16,7 @@ robot::robot()
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
 	pult = new launcher(PULT_CTRL_PORT);
-	
-	//ULTRASONIC (OUT, IN)
-	sonic = new Ultrasonic(2, 3);
-	sonic->SetAutomaticMode(true);
+	feed();
 }
 robot::~robot()
 {
@@ -34,8 +31,13 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	//comp->Start();
-	//move->autoDrive();//Not yet implemented
+	move->autoDrive();
+	feed();
+	Wait(1);
+	feed();
+	pult->autoLaunch();
+	feed();
+	
 }
 
 void robot::OperatorControl()
@@ -45,14 +47,39 @@ void robot::OperatorControl()
 	{	
 		move->remoteDrive();
 		elToro->run();
+		feed();
 		pult->set();
+		feed();
 		dashSend();
+		feed();
 	}
 	
 	pult->off();
 	comp->Stop();
 }
 
+/*
+ * FUNCTION: feed
+ * DESCRIPTION: just makes feeding watchdog line less overwhelming
+ * 	among the rest of the code
+ */
+void robot::feed()
+{
+	GetWatchdog.Feed();
+}
+
+/*
+ * FUNCTION: dashSend
+ * DESCRIPTION: send SmartDashboard collected data
+ * DATA SENT:
+ * 	compressor status (running?)
+ * 	launcher status (ready?)
+ * 	trigger status (ready?)
+ * 	El Toro status (running? direction?)
+ * 	left motor status (speed? direction?)
+ * 	right motor status (speed? direction?)
+ * 	speed multiplier
+ */
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
