@@ -16,10 +16,6 @@ robot::robot()
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
 	pult = new launcher(PULT_CTRL_PORT);
-	
-	//ULTRASONIC (OUT, IN)
-	sonic = new Ultrasonic(2, 3);
-	sonic->SetAutomaticMode(true);
 }
 robot::~robot()
 {
@@ -29,7 +25,6 @@ robot::~robot()
 	delete elToro;
 	delete comp;
 	delete pult;
-	delete sonic;
 }
 
 void robot::Autonomous()
@@ -56,12 +51,10 @@ void robot::OperatorControl()
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
-	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
-	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
-	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
-	
-	SmartDashboard::PutNumber("Ultrasonic", sonic->GetRangeInches());
-	
+	//SmartDashboard::PutBoolean("Launcher", pult->getLaunch());
+	//SmartDashboard::PutBoolean("Trigger", pult->getTrigger());
+	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+		
 	SmartDashboard::PutNumber("Left Motors",
 			-driver->GetRawAxis(xbox::axis::leftY));
 	SmartDashboard::PutNumber("Right Motors",

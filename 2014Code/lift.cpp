@@ -22,4 +22,9 @@ void lift::run()
 		a->Set(stickStatus);
 		b->Set(-stickStatus);
 	}
+	else
+	{
+		a->Set(0);
+		b->Set(0);
+	}
 }
