@@ -69,3 +69,8 @@ bool launcher::getLaunchStatus()
 {
 	return launchStatus;
 }
+
+bool launcher::getTriggerStatus()
+{
+	return triggerStatus;
+}
