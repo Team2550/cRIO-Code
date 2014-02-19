@@ -47,7 +47,7 @@ void robot::OperatorControl()
 		move->remoteDrive();
 		elToro->run();
 		feed();
-		pult->set();
+		pult->remoteLaunch();
 		feed();
 		dashSend();
 		feed();
@@ -64,7 +64,7 @@ void robot::OperatorControl()
  */
 void robot::feed()
 {
-	GetWatchdog.Feed();
+	GetWatchdog().Feed();
 }
 
 /*
@@ -82,9 +82,9 @@ void robot::feed()
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
-	//SmartDashboard::PutBoolean("Launcher", pult->getLaunch());
-	//SmartDashboard::PutBoolean("Trigger", pult->getTrigger());
-	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
+	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
+	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
 		
 	SmartDashboard::PutNumber("Left Motors",
 			-driver->GetRawAxis(xbox::axis::leftY));
