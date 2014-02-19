@@ -14,6 +14,7 @@ class lift
 	public:
 		lift(const int stickPort);
 		~lift();
+		void autoRun(float speed);
 		void run();
 };
 

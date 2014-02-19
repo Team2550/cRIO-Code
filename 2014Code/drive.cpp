@@ -22,12 +22,37 @@ Drive::~Drive()
  * 	autoDrive runs any drivetrain-related
  * 	movements during the autonomous period of
  * 	the match.
+ * PARAMETERS:
+ * 	startSpeed - speed at which to start motors
+ * 	endSpeed - speed at to go at end
+ * 	time - total drive time
+ * 	stop - whether or not to stop at the end
  */
-void Drive::autoDrive()
+void Drive::autoDrive(float startSpeed, float endSpeed, float time, bool stop)
 {
-	left->Set(.5);
-	right->Set(.5);
-	Wait(3);
+	double inc = time / .05;//loop increment
+	for (double i = startSpeed; i <= endSpeed; i+=inc)
+	{
+		left->Set(i);
+		right->Set(i);
+		Wait(.05);
+	}
+	
+	if (stop)
+	{
+		left->Set(0);
+		right->Set(0);
+	}
+}
+
+/*
+ * FUNCTION: stop
+ * DESCRIPTION: stops all drive motors
+ */
+void Drive::stop()
+{
+	left->Set(0);
+	right->Set(0);
 }
 
 /*
@@ -59,10 +84,10 @@ void Drive::remoteDrive()
 		right->Set(0);
 	
 	//speed limiting
-	if (stick->GetRawButton(xbox::btn::back))
-		speedMult = .5;
-	else if (stick->GetRawButton(xbox::btn::start))
+	if (stick->GetRawButton(xbox::btn::rb))
 		speedMult = 1;
+	else
+		speedMult = .5;
 }
 
 /*

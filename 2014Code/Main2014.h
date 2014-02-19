@@ -25,7 +25,7 @@ class robot : public SimpleRobot
 		
 		//motors
 		Drive* move;
-		lift* elToro;//the ball pickupper... nicknamed El Toro
+		lift* elChuro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS
 		Compressor* comp; //short for compressor

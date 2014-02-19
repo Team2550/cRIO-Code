@@ -11,7 +11,7 @@ robot::robot()
 	
 	//MOTORS
 	move = new Drive(DRIVER_PORT);
-	elToro = new lift(PULT_CTRL_PORT);
+	elChuro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
@@ -23,29 +23,35 @@ robot::~robot()
 	delete driver;
 	delete pultCtrl;
 	delete move;
-	delete elToro;
+	delete elChuro;
 	delete comp;
 	delete pult;
 }
 
 void robot::Autonomous()
 {
-	move->autoDrive();
+	elChuro->autoRun(-.5);
+	Wait(.5);
 	feed();
-	Wait(1);
+	elChuro->autoRun(.5);
+	move->autoDrive(1, 1, 1, false);
 	feed();
-	pult->autoLaunch();
+	pult->load();
 	feed();
-	
+	//move->autoDrive(.25, .5, 3);
+	feed();
+	//pult->autoLaunch();
+	feed();
+	elChuro->autoRun(0);
 }
 
 void robot::OperatorControl()
 {
 	comp->Start();
 	while (IsOperatorControl())
-	{	
+	{
 		move->remoteDrive();
-		elToro->run();
+		elChuro->run();
 		feed();
 		pult->remoteLaunch();
 		feed();

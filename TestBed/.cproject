@@ -4,21 +4,11 @@
 <cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage2">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
 		<cconfiguration id="org.eclipse.cdt.core.default.config.49153356">
-			<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.49153356" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
-				<externalSettings/>
-				<extensions>
-					<extension id="com.windriver.ide.core.WRScannerInfoProvider" point="org.eclipse.cdt.core.ScannerInfoProvider"/>
-					<extension id="com.windriver.ide.core.WRElfParserVxWorks" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="org.eclipse.cdt.core.pathentry">
-				<pathentry kind="src" path=""/>
-				<pathentry kind="out" path=""/>
-				<pathentry kind="con" path="com.windriver.ide.core.WR_CONTAINER"/>
-				<pathentry kind="con" path="com.windriver.ide.core.build.model.WR_USERDEFINED_CONTAINER"/>
-			</storageModule>
+			<storageModule externalCElementFile="org.eclipse.cdt.core.default.config.49153356_org.eclipse.cdt.core.settings" id="org.eclipse.cdt.core.default.config.49153356" name="Configuration"/>
+			<storageModule externalCElementFile="org.eclipse.cdt.core.default.config.49153356_org.eclipse.cdt.core.externalSettings"/>
+			<storageModule externalCElementFile="org.eclipse.cdt.core.default.config.49153356_org.eclipse.cdt.core.pathentry"/>
+			<storageModule externalCElementFile="org.eclipse.cdt.core.default.config.49153356_scannerConfiguration"/>
+			<storageModule externalCElementFile="org.eclipse.cdt.core.default.config.49153356_userdefinedContainer"/>
 		</cconfiguration>
 	</storageModule>
 </cproject>

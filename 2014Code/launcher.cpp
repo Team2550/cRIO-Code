@@ -6,6 +6,8 @@ launcher::launcher(const int stickPort)
 	trigger = new DoubleSolenoid(5,6);
 	stick = new Joystick(stickPort);
 	trigger->Set(DoubleSolenoid::kForward);
+	triggerStatus = true;
+	launchStatus = false;
 }
 
 launcher::~launcher()
@@ -15,6 +17,14 @@ launcher::~launcher()
 	delete trigger;
 } 
 
+void launcher::load()
+{
+	pistons->back();
+	trigger->Set(DoubleSolenoid::kForward);
+	launchStatus = true;
+	triggerStatus = true;
+}
+
 void launcher::autoLaunch()
 {
 	trigger->Set(DoubleSolenoid::kReverse);
@@ -22,29 +32,18 @@ void launcher::autoLaunch()
 	pistons->fwd();
 	Wait(.5);
 	trigger->Set(DoubleSolenoid::kForward);
+	launchStatus = false;
+	triggerStatus = true;
 }
 
 void launcher::remoteLaunch()
 {
 	//prime catapult
 	if (stick->GetRawButton(xbox::btn::rb))
-	{
-		trigger->Set(DoubleSolenoid::kReverse);
-		Wait(.1);
-		pistons->fwd();
-		Wait(.5);
-		trigger->Set(DoubleSolenoid::kForward);
-		launchStatus = false;
-		triggerStatus = true;
-	}
+		autoLaunch();
 	//reload catapult
 	if (stick->GetRawButton(xbox::btn::lb)) 
-	{
-		pistons->back();
-		trigger->Set(DoubleSolenoid::kForward);
-		launchStatus = true;
-		triggerStatus = true;
-	}
+		load();
 	//operate trigger
 	if (stick->GetRawButton(xbox::btn::y))
 	{

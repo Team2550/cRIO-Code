@@ -17,6 +17,7 @@ class launcher
 	public:
 		launcher(const int stickPort);
 		~launcher();
+		void load();
 		void autoLaunch();
 		void remoteLaunch();
 		void off();

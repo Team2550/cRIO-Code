@@ -14,12 +14,24 @@ lift::~lift()
 	delete b;
 }
 
+/*
+ * FUNCTION: autoRun
+ * DESCRIPTION: run lift at set speed
+ * PARAMETERS:
+ * 	speed - the speed at which to run the motors, positive pulls up, keep value between -1 and 1
+ */
+void lift::autoRun(float speed)
+{
+		a->Set(-speed / 2);
+		b->Set(speed);
+}
+
 void lift::run()
 {
 	float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
 	if (fabs(stickStatus) > .2)
 	{
-		a->Set(stickStatus);
+		a->Set(stickStatus / 2);
 		b->Set(-stickStatus);
 	}
 	else

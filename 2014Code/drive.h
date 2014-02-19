@@ -10,8 +10,9 @@ class Drive
 		Drive(const int stickPort);
 		~Drive();
 
-		void autoDrive();
+		void autoDrive(float startSpeed, float endSpeed, float time, bool stop = true);
 		void remoteDrive();
+		void stop();
 		float getSpeedMult();
 	private:
 		Joystick* stick;
