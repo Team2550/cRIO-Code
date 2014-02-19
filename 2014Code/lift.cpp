@@ -22,8 +22,8 @@ lift::~lift()
  */
 void lift::autoRun(float speed)
 {
-		a->Set(-speed / 2);
-		b->Set(speed);
+		a->Set(-speed);
+		b->Set(speed / 2);
 }
 
 void lift::run()
@@ -31,8 +31,8 @@ void lift::run()
 	float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
 	if (fabs(stickStatus) > .2)
 	{
-		a->Set(stickStatus / 2);
-		b->Set(-stickStatus);
+		a->Set(stickStatus);
+		b->Set(-stickStatus / 2);
 	}
 	else
 	{

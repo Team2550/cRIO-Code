@@ -7,7 +7,7 @@ launcher::launcher(const int stickPort)
 	stick = new Joystick(stickPort);
 	trigger->Set(DoubleSolenoid::kForward);
 	triggerStatus = true;
-	launchStatus = false;
+	launchStatus = false; 
 }
 
 launcher::~launcher()
