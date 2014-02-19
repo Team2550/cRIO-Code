@@ -51,7 +51,7 @@ void launcher::remoteLaunch()
 		trigger->Set(DoubleSolenoid::kForward);
 		triggerStatus = true;
 	}
-	if (stick->GetRawButton(xbox::btn::y))
+	if (stick->GetRawButton(xbox::btn::x))
 	{
 		trigger->Set(DoubleSolenoid::kReverse);
 		triggerStatus = false;
