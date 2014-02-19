@@ -30,19 +30,30 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	elChuro->autoRun(-.5);
+	float wdExpire = GetWatchdog().GetExpiration();
+	elChuro->autoRun(1);
+	Wait(.2);
+	feed();
+	pult->load();
+	feed();
 	Wait(.5);
 	feed();
-	elChuro->autoRun(.5);
-	move->autoDrive(1, 1, 1, false);
+	
+	//drive
+	elChuro->autoRun(-.5);
+	move->move(.5, .5);
+	GetWatchdog().SetExpiration(4.3);
+	Wait(4.2);
 	feed();
-	//pult->load();
+	GetWatchdog().SetExpiration(wdExpire);
+	move->stop();
 	feed();
-	//move->autoDrive(.25, .5, 3);
-	feed();
-	//pult->autoLaunch();
+	
+	pult->autoLaunch();
 	feed();
 	elChuro->autoRun(0);
+	comp->Start();
+	feed();
 }
 
 void robot::OperatorControl()

@@ -10,7 +10,7 @@ class Drive
 		Drive(const int stickPort);
 		~Drive();
 
-		void autoDrive(float startSpeed, float endSpeed, float time, bool stop = true);
+		void move(float leftS, float rightS);
 		void remoteDrive();
 		void stop();
 		float getSpeedMult();
