@@ -15,7 +15,7 @@ robot::robot()
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
-	pult = new launcher(PULT_CTRL_PORT);
+	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
 	feed();
 }
 robot::~robot()
@@ -36,7 +36,7 @@ void robot::Autonomous()
 	elChuro->autoRun(.5);
 	move->autoDrive(1, 1, 1, false);
 	feed();
-	pult->load();
+	//pult->load();
 	feed();
 	//move->autoDrive(.25, .5, 3);
 	feed();
@@ -59,7 +59,6 @@ void robot::OperatorControl()
 		feed();
 	}
 	
-	pult->off();
 	comp->Stop();
 }
 
