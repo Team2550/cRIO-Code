@@ -4,7 +4,7 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
-	feed();
+	GetWatchdog().SetEnabled(true);
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
@@ -26,7 +26,6 @@ robot::~robot()
 	delete elToro;
 	delete comp;
 	delete pult;
-	delete sonic;
 }
 
 void robot::Autonomous()
@@ -83,13 +82,14 @@ void robot::feed()
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
-	SmartDashboard::PutString("Launcher", pult->getStatus());
-	SmartDashboard::PutString("Lift", elToro->getStatus());
-	SmartDashboard::PutNumber("Ultrasonic", sonic->GetRangeInches());
+	//SmartDashboard::PutBoolean("Launcher", pult->getLaunch());
+	//SmartDashboard::PutBoolean("Trigger", pult->getTrigger());
+	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+		
 	SmartDashboard::PutNumber("Left Motors",
-			driver->GetRawAxis(xbox::axis::leftY));
+			-driver->GetRawAxis(xbox::axis::leftY));
 	SmartDashboard::PutNumber("Right Motors",
-			driver->GetRawAxis(xbox::axis::rightY));
+			-driver->GetRawAxis(xbox::axis::rightY));
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 }
 

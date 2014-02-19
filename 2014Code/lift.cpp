@@ -22,17 +22,9 @@ void lift::run()
 		a->Set(stickStatus);
 		b->Set(-stickStatus);
 	}
-	
-	//set status
-	if (stickStatus < -.2)
-		status = "UNLOAD";
-	else if (stickStatus > .2)
-		status = "LOAD";
 	else
-		status = "OFF";
-}
-
-std::string lift::getStatus()
-{
-	return status;
+	{
+		a->Set(0);
+		b->Set(0);
+	}
 }
