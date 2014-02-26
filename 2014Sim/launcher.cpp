@@ -3,12 +3,12 @@
 launcher::launcher(const int ctrlPort, const int confirmPort)
 {
 	pistons = new DoublePiston(1,2,3,4);
-	trigger = new DoubleSolenoid(5,6);
+	//trigger = new DoubleSolenoid(5,6);
 	
 	ctrlStick = new Joystick(ctrlPort);
 	confirmStick = new Joystick(confirmPort);
 	
-	trigger->Set(DoubleSolenoid::kForward);//kForward pulls back
+	//trigger->Set(DoubleSolenoid::kForward);//kForward pulls back
 	triggerStatus = true;
 	launchStatus = false; 
 }

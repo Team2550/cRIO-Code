@@ -14,8 +14,8 @@ class DoublePiston
 		void fwd();
 		void back();
 	private:
-		DoubleSolenoid* a;
-		DoubleSolenoid* b;
+		//DoubleSolenoid* a;
+		//DoubleSolenoid* b;
 		std::string status;
 };
 

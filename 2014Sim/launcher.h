@@ -8,9 +8,8 @@
 class launcher
 {
 	private:
-		//Joystick* stick;
 		DoublePiston* pistons;
-		DoubleSolenoid* trigger;
+		//DoubleSolenoid* trigger;
 		Joystick* ctrlStick;
 		Joystick* confirmStick;
 		bool launchStatus;
