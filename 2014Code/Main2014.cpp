@@ -34,7 +34,7 @@ void robot::Autonomous()
 	elChuro->autoRun(1);
 	Wait(.2); 
 	feed();
-	pult->load();
+	//pult->load();
 	feed();
 	Wait(.5);
 	feed();
@@ -49,7 +49,7 @@ void robot::Autonomous()
 	move->stop();
 	feed();
 	
-	pult->autoLaunch();
+	//pult->autoLaunch();
 	feed();
 	elChuro->autoRun(0);
 	comp->Start();
