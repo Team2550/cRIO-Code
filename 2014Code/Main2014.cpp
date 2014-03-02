@@ -70,6 +70,7 @@ void robot::OperatorControl()
 		feed();
 	}
 	
+	pult->off();
 	comp->Stop();
 }
 
@@ -110,4 +111,3 @@ void robot::dashSend()
 }
 
 START_ROBOT_CLASS(robot);
-;
