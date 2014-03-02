@@ -16,6 +16,7 @@ class robot : public SimpleRobot
 		~robot();//destructor
 		void Autonomous();
 		void OperatorControl();
+		void feed();
 		void dashSend();
 	private:		
 		//CONTROL
@@ -23,8 +24,8 @@ class robot : public SimpleRobot
 		Joystick* pultCtrl;
 		
 		//motors
-		Drive* tank;
-		lift* elToro;//the ball pickupper... nicknamed El Toro
+		Drive* move;
+		lift* elChuro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS
 		Compressor* comp; //short for compressor

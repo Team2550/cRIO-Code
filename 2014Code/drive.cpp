@@ -4,26 +4,31 @@ Drive::Drive(const int stickPort)
 {
 	stick = new Joystick(stickPort);
 	//motor creation
-	Left = new Jaguar(1);
-	Right = new Jaguar(2);
+	left = new Jaguar(1);
+	right = new Jaguar(2);
+	speedMult = .5;
 }
 Drive::~Drive()
 {
 	delete stick; 
-	delete Left;
-	delete Right;
+	delete left;
+	delete right;
+}
+
+void Drive::move(float leftS, float rightS)
+{
+	left->Set(leftS);
+	right->Set(-rightS);
 }
 
 /*
- * FUNCTION: autoDrive
- * AUTHOR: Caleb Reister
- * DESCRIPTION:
- * 	autoDrive runs any drivetrain-related
- * 	movements during the autonomous period of
- * 	the match.
+ * FUNCTION: stop
+ * DESCRIPTION: stops all drive motors
  */
-void Drive::autoDrive()
+void Drive::stop()
 {
+	left->Set(0);
+	right->Set(0);
 }
 
 /*
@@ -46,11 +51,26 @@ void Drive::remoteDrive()
 	//basic movements
 	//fabs() is the float version of abs()
 	if (fabs(leftStick) > 0.2)//number accounts for dead zone
-		Left->Set(-leftStick * 1);
+		left->Set(-leftStick * speedMult);
 	else
-		Left->Set(0);
+		left->Set(0);
 	if (fabs(rightStick) > 0.2)
-		Right->Set(rightStick * 1);
+		right->Set(rightStick * speedMult);
 	else
-		Right->Set(0);
+		right->Set(0);
+	
+	//speed limiting
+	if (stick->GetRawButton(xbox::btn::rb))
+		speedMult = 1;
+	else
+		speedMult = .5;
+}
+
+/*
+ * FUNCTION: getSpeedMult
+ * RETURN: speed multiplier of drive object
+ */
+float Drive::getSpeedMult()
+{
+	return speedMult;
 }

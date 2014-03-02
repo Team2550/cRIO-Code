@@ -10,13 +10,16 @@ class Drive
 		Drive(const int stickPort);
 		~Drive();
 
-		void autoDrive();
+		void move(float leftS, float rightS);
 		void remoteDrive();
+		void stop();
+		float getSpeedMult();
 	private:
 		Joystick* stick;
 		//left and right drive motors
-		Jaguar* Left;
-		Jaguar* Right;
+		Jaguar* left;
+		Jaguar* right;
+		float speedMult;//speed multiplier
 };
 
 #endif

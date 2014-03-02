@@ -4,14 +4,14 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
-	GetWatchdog().SetEnabled(false);
+	GetWatchdog().SetEnabled(true);
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
-	tank = new Drive(DRIVER_PORT);
-	elToro = new lift(PULT_CTRL_PORT);
+	move = new Drive(DRIVER_PORT);
+	elChuro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
@@ -25,8 +25,8 @@ robot::~robot()
 {
 	delete driver;
 	delete pultCtrl;
-	delete tank;
-	delete elToro;
+	delete move;
+	delete elChuro;
 	delete comp;
 	delete pult;
 	delete sonic;
@@ -34,32 +34,83 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	//comp->Start();
-	//tank->autoDrive();//Not yet implemented
+	float wdExpire = GetWatchdog().GetExpiration();
+	elChuro->autoRun(1);
+	Wait(.2); 
+	feed();
+	//pult->load();
+	feed();
+	Wait(.5);
+	feed();
+	
+	//drive
+	elChuro->autoRun(-.5);
+	move->move(.5, .5);
+	GetWatchdog().SetExpiration(4.3);
+	Wait(4.2);
+	feed();
+	GetWatchdog().SetExpiration(wdExpire);
+	move->stop();
+	feed();
+	
+	//pult->autoLaunch();
+	feed();
+	elChuro->autoRun(0);
+	comp->Start();
+	feed();
 }
 
 void robot::OperatorControl()
 {
 	comp->Start();
 	while (IsOperatorControl())
-	{	
-		tank->remoteDrive();
-		elToro->run();
-		pult->set();
+	{
+		move->remoteDrive();
+		elChuro->run();
+		feed();
+		pult->remoteLaunch();
+		feed();
 		dashSend();
+		feed();
 	}
 	
-	pult->off();
 	comp->Stop();
 }
 
+/*
+ * FUNCTION: feed
+ * DESCRIPTION: just makes feeding watchdog line less overwhelming
+ * 	among the rest of the code
+ */
+void robot::feed()
+{
+	GetWatchdog().Feed();
+}
+
+/*
+ * FUNCTION: dashSend
+ * DESCRIPTION: send SmartDashboard collected data
+ * DATA SENT:
+ * 	compressor status (running?)
+ * 	launcher status (ready?)
+ * 	trigger status (ready?)
+ * 	El Toro status (running? direction?)
+ * 	left motor status (speed? direction?)
+ * 	right motor status (speed? direction?)
+ * 	speed multiplier
+ */
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
-	SmartDashboard::PutString("Launcher", pult->getStatus());
-	SmartDashboard::PutString("Lift", elToro->getStatus());
-	SmartDashboard::PutNumber("Ultrasonic", sonic->GetRangeInches());
+	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
+	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
+	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+		
+	SmartDashboard::PutNumber("Left Motors",
+			-driver->GetRawAxis(xbox::axis::leftY));
+	SmartDashboard::PutNumber("Right Motors",
+			-driver->GetRawAxis(xbox::axis::rightY));
+	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 }
 
 START_ROBOT_CLASS(robot);
-;

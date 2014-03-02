@@ -11,13 +11,18 @@ class launcher
 		//Joystick* stick;
 		DoublePiston* pistons;
 		DoubleSolenoid* trigger;
-		Joystick* stick;
+		Joystick* ctrlStick;
+		Joystick* confirmStick;
+		bool launchStatus;
+		bool triggerStatus;
 	public:
-		launcher(const int stickPort);
+		launcher(const int ctrlPort, const int confirmPort);
 		~launcher();
-		void set();
-		void off();
-		std::string getStatus();
+		void load();
+		void autoLaunch();
+		void remoteLaunch();
+		bool getLaunchStatus();
+		bool getTriggerStatus();
 };
 
 #endif
