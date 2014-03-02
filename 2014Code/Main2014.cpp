@@ -15,11 +15,8 @@ robot::robot()
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
-	pult = new launcher(PULT_CTRL_PORT);
-	
-	//ULTRASONIC (OUT, IN)
-	sonic = new Ultrasonic(2, 3);
-	sonic->SetAutomaticMode(true);
+	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	feed();
 }
 robot::~robot()
 {
@@ -74,6 +71,7 @@ void robot::OperatorControl()
 		feed();
 	}
 	
+	pult->off();
 	comp->Stop();
 }
 

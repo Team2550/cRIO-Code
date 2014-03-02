@@ -2,16 +2,16 @@
 
 lift::lift(const int stickPort)
 {
-	stick = new Joystick(stickPort);
-	a = new Victor(3);
-	b = new Victor(4);
+	//stick = new Joystick(stickPort);
+	//a = new Victor(3);
+	//b = new Victor(4);
 }
 
 lift::~lift()
 {
-	delete stick;
-	delete a;
-	delete b;
+	//delete stick;
+	//delete a;
+	//delete b;
 }
 
 /*
@@ -22,21 +22,21 @@ lift::~lift()
  */
 void lift::autoRun(float speed)
 {
-		a->Set(-speed);
-		b->Set(speed / 2);
+		//a->Set(-speed);
+		//b->Set(speed / 2);
 }
 
 void lift::run()
 {
-	float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
-	if (fabs(stickStatus) > .2)
-	{
-		a->Set(stickStatus);
+	//float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
+	//if (fabs(stickStatus) > .2)
+	//{
+	//	a->Set(stickStatus);
 		b->Set(-stickStatus / 2);
-	}
-	else
-	{
-		a->Set(0);
-		b->Set(0);
-	}
+	//}
+	//else
+	//{
+	//	a->Set(0);
+	//	b->Set(0);
+	//}
 }

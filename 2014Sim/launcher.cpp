@@ -15,10 +15,10 @@ launcher::launcher(const int ctrlPort, const int confirmPort)
 
 launcher::~launcher()
 {
-	delete ctrlStick;
-	delete confirmStick;
-	delete pistons;
-	delete trigger;
+	//delete ctrlStick;
+	//delete confirmStick;
+	//delete pistons;
+	//delete trigger;
 } 
 
 /*
@@ -28,8 +28,8 @@ launcher::~launcher()
  */
 void launcher::load()
 {
-	trigger->Set(DoubleSolenoid::kForward);
-	pistons->back();
+	//trigger->Set(DoubleSolenoid::kForward);
+	//pistons->back();
 	launchStatus = true;
 	triggerStatus = true;
 }
@@ -43,11 +43,11 @@ void launcher::load()
  */
 void launcher::autoLaunch()
 {
-	trigger->Set(DoubleSolenoid::kReverse);
-	Wait(.1);
-	pistons->fwd();
-	Wait(.5);
-	trigger->Set(DoubleSolenoid::kForward);
+	//trigger->Set(DoubleSolenoid::kReverse);
+	//Wait(.1);
+	//pistons->fwd();
+	//Wait(.5);
+	//trigger->Set(DoubleSolenoid::kForward);
 	launchStatus = false;
 	triggerStatus = true;
 }
@@ -61,22 +61,22 @@ void launcher::autoLaunch()
 void launcher::remoteLaunch()
 {
 	//launch
-	if (ctrlStick->GetRawButton(xbox::btn::rb) && confirmStick->GetRawButton(xbox::btn::b))
+	//if (ctrlStick->GetRawButton(xbox::btn::rb) && confirmStick->GetRawButton(xbox::btn::b))
 		autoLaunch();
 	//reload
-	if (ctrlStick->GetRawButton(xbox::btn::lb)) 
+	//if (ctrlStick->GetRawButton(xbox::btn::lb)) 
 		load();
 	//operate trigger
-	if (ctrlStick->GetRawButton(xbox::btn::y))
-	{
-		trigger->Set(DoubleSolenoid::kForward);
-		triggerStatus = true;
-	}
-	if (ctrlStick->GetRawButton(xbox::btn::x))
-	{
+	//if (ctrlStick->GetRawButton(xbox::btn::y))
+	//{
+	//	trigger->Set(DoubleSolenoid::kForward);
+	//	triggerStatus = true;
+	//}
+	//if (ctrlStick->GetRawButton(xbox::btn::x))
+	//{
 		trigger->Set(DoubleSolenoid::kReverse);
 		triggerStatus = false;
-	}
+	//}
 }
 
 bool launcher::getLaunchStatus()
