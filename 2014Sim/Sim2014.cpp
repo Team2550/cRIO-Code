@@ -4,18 +4,18 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
-	GetWatchdog().SetEnabled(true);
+	//GetWatchdog().SetEnabled(true);
 	//CONTROL
-	driver = new Joystick(DRIVER_PORT);
-	pultCtrl = new Joystick(PULT_CTRL_PORT);
+	//driver = new Joystick(DRIVER_PORT);
+	//pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
-	move = new Drive(DRIVER_PORT);
-	elChuro = new lift(PULT_CTRL_PORT);
+	//move = new Drive(DRIVER_PORT);
+	/elChuro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
-	comp = new Compressor(1, 1);
-	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	//comp = new Compressor(1, 1);
+	//pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
 	feed();
 }
 robot::~robot()
