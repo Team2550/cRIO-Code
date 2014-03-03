@@ -74,7 +74,7 @@ void launcher::remoteLaunch()
 	//}
 	//if (ctrlStick->GetRawButton(xbox::btn::x))
 	//{
-		trigger->Set(DoubleSolenoid::kReverse);
+		//trigger->Set(DoubleSolenoid::kReverse);
 		triggerStatus = false;
 	//}
 }

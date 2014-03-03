@@ -1,5 +1,5 @@
-#ifndef MAIN2014_H
-#define MAIN2014_H
+#ifndef SIM2014_H
+#define SIM2014_H
 #include "WPILib.h"
 #include "xBox.h"
 #include "drive.h"
@@ -8,7 +8,10 @@
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
-		
+
+//Volts/inch of Ultrasonic sensor
+const double VOLTS_INCH = 0.009765625;// 512/5
+
 class robot : public SimpleRobot
 {
 	public:
@@ -32,7 +35,9 @@ class robot : public SimpleRobot
 		launcher* pult; //short for catapult
 		
 		//ULTRASONIC
-		Ultrasonic* sonic;
+		AnalogChannel* sonic;
+		double sonicInches;
+		bool sonicHotZone;
 };
 
 #endif

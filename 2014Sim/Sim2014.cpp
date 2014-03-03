@@ -1,4 +1,4 @@
-#include "Main2014.h"
+#include "Sim2014.h"
 
 robot::robot()
 {
@@ -11,11 +11,17 @@ robot::robot()
 	
 	//MOTORS
 	//move = new Drive(DRIVER_PORT);
-	/elChuro = new lift(PULT_CTRL_PORT);
+	elChuro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
 	//comp = new Compressor(1, 1);
 	//pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	
+	//ULTRASONIC SENSOR
+	sonic = new AnalogChannel(1);
+	sonicInches = 0;
+	sonicHotZone = false;
+	
 	feed();
 }
 robot::~robot()
@@ -66,6 +72,7 @@ void robot::OperatorControl()
 		feed();
 		pult->remoteLaunch();
 		feed();
+		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 		dashSend();
 		feed();
 	}
@@ -107,7 +114,16 @@ void robot::dashSend()
 	SmartDashboard::PutNumber("Right Motors",
 			-driver->GetRawAxis(xbox::axis::rightY));
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
+	feed();
+	
+	SmartDashboard::PutNumber("Ultrasonic", sonicInches);
+	if (sonicInches > 36 && sonicInches < 48)
+		sonicHotZone = true;
+	else
+		sonicHotZone = false;
+	
+	feed();
 }
 
 START_ROBOT_CLASS(robot);
-;
+

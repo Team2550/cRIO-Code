@@ -28,15 +28,15 @@ void lift::autoRun(float speed)
 
 void lift::run()
 {
-	//float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
-	//if (fabs(stickStatus) > .2)
-	//{
-	//	a->Set(stickStatus);
+	float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
+	/*if (fabs(stickStatus) > .2)
+	{
+		a->Set(stickStatus);
 		b->Set(-stickStatus / 2);
-	//}
-	//else
-	//{
-	//	a->Set(0);
-	//	b->Set(0);
-	//}
+	}
+	else
+	{
+		a->Set(0);
+		b->Set(0);
+	}*/
 }
