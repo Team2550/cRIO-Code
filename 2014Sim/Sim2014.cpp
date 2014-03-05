@@ -4,18 +4,18 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	//I have left it disabled for testing
-	//GetWatchdog().SetEnabled(true);
+	GetWatchdog().SetEnabled(false);
 	//CONTROL
-	//driver = new Joystick(DRIVER_PORT);
-	//pultCtrl = new Joystick(PULT_CTRL_PORT);
+	driver = new Joystick(DRIVER_PORT);
+	pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
-	//move = new Drive(DRIVER_PORT);
+	move = new Drive(DRIVER_PORT);
 	elChuro = new lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
-	//comp = new Compressor(1, 1);
-	//pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	comp = new Compressor(1, 1);
+	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
 	
 	//ULTRASONIC SENSOR
 	sonic = new AnalogChannel(1);
@@ -104,6 +104,8 @@ void robot::feed()
  */
 void robot::dashSend()
 {
+	static int count = 0;
+	
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
 	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
@@ -116,11 +118,24 @@ void robot::dashSend()
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 	feed();
 	
-	SmartDashboard::PutNumber("Ultrasonic", sonicInches);
-	if (sonicInches > 36 && sonicInches < 48)
-		sonicHotZone = true;
-	else
-		sonicHotZone = false;
+	sonicLog[count] = sonicInches;
+	
+	if (count == SONIC_AVG)
+	{
+		for (int i = 0; i < SONIC_AVG; i++)
+		{
+			if (sonicLog[i] > sonicInches)
+				sonicInches = sonicLog[i];
+		}
+		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
+		if (sonicInches > 36 && sonicInches < 48)
+			sonicHotZone = true;
+		else
+			sonicHotZone = false;
+		count = 0;
+	}
+	SmartDashboard::PutBoolean("FIRE", sonicHotZone);
+	count++;
 	
 	feed();
 }

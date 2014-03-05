@@ -4,21 +4,21 @@ Drive::Drive(const int stickPort)
 {
 	stick = new Joystick(stickPort);
 	//motor creation
-	//left = new Jaguar(1);
-	//right = new Jaguar(2);
-	//speedMult = .5;
+	left = new Victor(1);
+	right = new Victor(2);
+	speedMult = .5;
 }
 Drive::~Drive()
 {
-	//delete stick; 
-	//delete left;
-	//delete right;
+	delete stick; 
+	delete left;
+	delete right;
 }
 
 void Drive::move(float leftS, float rightS)
 {
-	//left->Set(leftS);
-	//right->Set(-rightS);
+	left->Set(leftS);
+	right->Set(-rightS);
 }
 
 /*
@@ -27,8 +27,8 @@ void Drive::move(float leftS, float rightS)
  */
 void Drive::stop()
 {
-	//left->Set(0);
-	//right->Set(0);
+	left->Set(0);
+	right->Set(0);
 }
 
 /*
@@ -45,25 +45,25 @@ void Drive::remoteDrive()
 {
 	//See documentation repository on Git server for axis
 		//mappings of xbox controller
-	//float leftStick = stick->GetRawAxis(xbox::axis::leftY);
-	//float rightStick = stick->GetRawAxis(xbox::axis::rightY);
+	float leftStick = stick->GetRawAxis(xbox::axis::leftY);
+	float rightStick = stick->GetRawAxis(xbox::axis::rightY);
 	
 	//basic movements
 	//fabs() is the float version of abs()
-	//if (fabs(leftStick) > 0.2)//number accounts for dead zone
-	//	left->Set(-leftStick * speedMult);
-	//else
-	//	left->Set(0);
-	//if (fabs(rightStick) > 0.2)
-	//	right->Set(rightStick * speedMult);
-	//else
-	//	right->Set(0);
+	if (fabs(leftStick) > 0.2)//number accounts for dead zone
+		left->Set(-leftStick * speedMult);
+	else
+		left->Set(0);
+	if (fabs(rightStick) > 0.2)
+		right->Set(rightStick * speedMult);
+	else
+		right->Set(0);
 	
 	//speed limiting
-	//if (stick->GetRawButton(xbox::btn::rb))
-	//	speedMult = 1;
-	//else
-	//	speedMult = .5;
+	if (stick->GetRawButton(xbox::btn::rb))
+		speedMult = 1;
+	else
+		speedMult = .5;
 }
 
 /*
