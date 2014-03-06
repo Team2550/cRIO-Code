@@ -26,6 +26,7 @@ robot::~robot()
 	delete elChuro;
 	delete comp;
 	delete pult;
+	delete sonic;
 }
 
 void robot::Autonomous()
