@@ -32,7 +32,7 @@ void robot::Autonomous()
 {
 	float wdExpire = GetWatchdog().GetExpiration();
 	elChuro->autoRun(1);
-	Wait(.2);
+	Wait(.2); 
 	feed();
 	//pult->load();
 	feed();
@@ -70,6 +70,7 @@ void robot::OperatorControl()
 		feed();
 	}
 	
+	pult->off();
 	comp->Stop();
 }
 
@@ -110,4 +111,3 @@ void robot::dashSend()
 }
 
 START_ROBOT_CLASS(robot);
-;
