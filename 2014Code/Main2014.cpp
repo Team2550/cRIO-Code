@@ -4,6 +4,7 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	GetWatchdog().SetEnabled(true);
+	
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
@@ -15,6 +16,13 @@ robot::robot()
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
 	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	
+	//ULTRASONIC SENSOR
+	sonic = new AnalogChannel(1);
+	SONIC_SAMPLE = GetInt("ULTRASONIC_SAMPLE_SIZE", 200);
+	sonicInches = 0;
+	sonicHotZone = false;
+	sonicLog = new double[SONIC_SAMPLE];
 	feed();
 }
 robot::~robot()
@@ -26,6 +34,7 @@ robot::~robot()
 	delete comp;
 	delete pult;
 	delete sonic;
+	delete [] sonicLog;
 }
 
 void robot::Autonomous()
@@ -66,6 +75,7 @@ void robot::OperatorControl()
 		feed();
 		pult->remoteLaunch();
 		feed();
+		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 		dashSend();
 		feed();
 	}
@@ -111,21 +121,22 @@ void robot::dashSend()
 	feed();
 	
 	sonicLog[count] = sonicInches;
-	if (count == SONIC_AVG)
+	if (count == SONIC_SAMPLE)
 	{
-		for (int i = 0; i < SONIC_AVG; i++)
+		for (int i = 0; i < SONIC_SAMPLE; i++)
 		{
 			if (sonicLog[i] > sonicInches)
 				sonicInches = sonicLog[i];
 		}
 		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
-		if (sonicInches > 36 && sonicInches < 48)
+		if (sonicInches > GetInt("LAUNCH_ZONE_MIN", 36)
+			&& sonicInches < GetInt("LAUNCH_ZONE_MAX", 48))
 			sonicHotZone = true;
 		else
 			sonicHotZone = false;
 		count = 0;
 	}
-	SmartDashboard::PutBoolean("FIRE", sonicHotZone);
+	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicHotZone);
 	count++;
 	feed();
 }
