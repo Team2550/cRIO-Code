@@ -109,12 +109,12 @@ void robot::dashSend()
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
 	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
-	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
 		
-	SmartDashboard::PutNumber("Left Motors",
-			-driver->GetRawAxis(xbox::axis::leftY));
-	SmartDashboard::PutNumber("Right Motors",
-			-driver->GetRawAxis(xbox::axis::rightY));
+	//SmartDashboard::PutNumber("Left Motors",
+	//		-driver->GetRawAxis(xbox::axis::leftY));
+	//SmartDashboard::PutNumber("Right Motors",
+	//		-driver->GetRawAxis(xbox::axis::rightY));
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
 	feed();
 	

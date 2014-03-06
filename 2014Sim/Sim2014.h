@@ -10,7 +10,7 @@ const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
 
 //Volts/inch of Ultrasonic sensor
-const double VOLTS_INCH = 0.009765625;// 512/5
+const double VOLTS_INCH = 0.009765625;//5/512
 const int SONIC_AVG = 100;
 
 class robot : public SimpleRobot

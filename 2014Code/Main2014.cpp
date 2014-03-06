@@ -18,11 +18,9 @@ robot::robot()
 	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
 	
 	//ULTRASONIC SENSOR
-	sonic = new AnalogChannel(1);
-	SONIC_SAMPLE = GetInt("ULTRASONIC_SAMPLE_SIZE", 200);
+	sonic = new AnalogChannel(2);
 	sonicInches = 0;
 	sonicHotZone = false;
-	sonicLog = new double[SONIC_SAMPLE];
 	feed();
 }
 robot::~robot()
@@ -34,7 +32,6 @@ robot::~robot()
 	delete comp;
 	delete pult;
 	delete sonic;
-	delete [] sonicLog;
 }
 
 void robot::Autonomous()
@@ -123,14 +120,16 @@ void robot::dashSend()
 	sonicLog[count] = sonicInches;
 	if (count == SONIC_SAMPLE)
 	{
+		feed();
 		for (int i = 0; i < SONIC_SAMPLE; i++)
 		{
 			if (sonicLog[i] > sonicInches)
 				sonicInches = sonicLog[i];
 		}
+		feed();
 		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
-		if (sonicInches > GetInt("LAUNCH_ZONE_MIN", 36)
-			&& sonicInches < GetInt("LAUNCH_ZONE_MAX", 48))
+		if (sonicInches > 18
+			&& sonicInches < 30)
 			sonicHotZone = true;
 		else
 			sonicHotZone = false;

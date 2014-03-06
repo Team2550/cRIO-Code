@@ -8,11 +8,12 @@
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
+const int SONIC_SAMPLE = 10;
 
 //Volts/inch of Ultrasonic sensor
-const double VOLTS_INCH = 0.009765625;// 512/5
+const double VOLTS_INCH = 0.009765625;//5/512
 		
-class robot : public SimpleRobot, private Preferences
+class robot : public SimpleRobot
 {
 	public:
 		robot();//constructor
@@ -36,10 +37,9 @@ class robot : public SimpleRobot, private Preferences
 		
 		//ULTRASONIC
 		AnalogChannel* sonic;
-		int SONIC_SAMPLE;
-		double sonicInches;
+		long double sonicInches;
 		bool sonicHotZone;
-		double* sonicLog;
+		long double sonicLog[SONIC_SAMPLE];
 };
 
 #endif
