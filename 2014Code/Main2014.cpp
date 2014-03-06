@@ -3,7 +3,6 @@
 robot::robot()
 {
 	//Watchdog must be enabled for the competition
-	//I have left it disabled for testing
 	GetWatchdog().SetEnabled(true);
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
@@ -33,7 +32,7 @@ void robot::Autonomous()
 {
 	float wdExpire = GetWatchdog().GetExpiration();
 	elChuro->autoRun(1);
-	Wait(.2); 
+	Wait(.2);
 	feed();
 	//pult->load();
 	feed();
@@ -71,10 +70,8 @@ void robot::OperatorControl()
 		feed();
 	}
 	
-	pult->off();
 	comp->Stop();
 }
-
 /*
  * FUNCTION: feed
  * DESCRIPTION: just makes feeding watchdog line less overwhelming
@@ -99,6 +96,8 @@ void robot::feed()
  */
 void robot::dashSend()
 {
+	static int count = 0;
+	
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
 	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
@@ -109,6 +108,26 @@ void robot::dashSend()
 	SmartDashboard::PutNumber("Right Motors",
 			-driver->GetRawAxis(xbox::axis::rightY));
 	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
+	feed();
+	
+	sonicLog[count] = sonicInches;
+	if (count == SONIC_AVG)
+	{
+		for (int i = 0; i < SONIC_AVG; i++)
+		{
+			if (sonicLog[i] > sonicInches)
+				sonicInches = sonicLog[i];
+		}
+		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
+		if (sonicInches > 36 && sonicInches < 48)
+			sonicHotZone = true;
+		else
+			sonicHotZone = false;
+		count = 0;
+	}
+	SmartDashboard::PutBoolean("FIRE", sonicHotZone);
+	count++;
+	feed();
 }
 
 START_ROBOT_CLASS(robot);

@@ -8,6 +8,7 @@
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
+const int SONIC_AVG = 200;
 		
 class robot : public SimpleRobot
 {
@@ -32,7 +33,10 @@ class robot : public SimpleRobot
 		launcher* pult; //short for catapult
 		
 		//ULTRASONIC
-		Ultrasonic* sonic;
+		AnalogChannel* sonic;
+		double sonicInches;
+		bool sonicHotZone;
+		double sonicLog[SONIC_AVG];
 };
 
 #endif
