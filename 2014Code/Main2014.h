@@ -1,5 +1,7 @@
 #ifndef MAIN2014_H
 #define MAIN2014_H
+#include <iostream>
+#include <iomanip>
 #include "WPILib.h"
 #include "xBox.h"
 #include "drive.h"
@@ -8,8 +10,6 @@
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
-const int SONIC_SAMPLE = 10;
-const int DASH_UPDATE = 20;
 
 //Volts/inch of Ultrasonic sensor
 const double VOLTS_INCH = 0.009765625;//5/512
@@ -40,7 +40,6 @@ class robot : public SimpleRobot
 		AnalogChannel* sonic;
 		long double sonicInches;
 		bool sonicHotZone;
-		long double sonicLog[SONIC_SAMPLE];
 };
 
 #endif

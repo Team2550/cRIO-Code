@@ -6,7 +6,7 @@ Drive::Drive(const int stickPort)
 	//motor creation
 	left = new Jaguar(1);
 	right = new Jaguar(2);
-	speedMult = .5;
+	speedMult = .65;
 }
 Drive::~Drive()
 {
@@ -63,7 +63,7 @@ void Drive::remoteDrive()
 	if (stick->GetRawButton(xbox::btn::rb))
 		speedMult = 1;
 	else
-		speedMult = .5;
+		speedMult = .65;
 }
 
 /*

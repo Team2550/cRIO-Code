@@ -40,23 +40,20 @@ void robot::Autonomous()
 	elChuro->autoRun(1);
 	Wait(.2);																							
 	feed();
+	
+	move->move(.55, .5);
 	Wait(.5);
+	pult->load();
 	feed();
 	
 	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 	//drive
-	while (sonicInches > 30)
+	while (sonicInches > 48)
 	{
-		elChuro->autoRun(-.5);
-		move->move(.55, .5);
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 		feed();
 	}
-	feed();
-	move->stop();
-	
-	feed();
-	pult->load();	
+	move->stop();	
 	
 	//pult->autoLaunch();
 	feed();
@@ -74,18 +71,9 @@ void robot::OperatorControl()
 		elChuro->run();
 		pult->remoteLaunch();
 		
-		for (int i = SONIC_SAMPLE; i > 0; i--)
-		{
-			sonicLog[i] = sonicLog[i-1];
-		}
-		sonicInches = 0.;
-		for (int i = 0; i < SONIC_SAMPLE; i++)
-		{
-			if (sonicLog[i] > sonicInches)
-				sonicInches = sonicLog[i];
-		}
-		if (sonicInches > 18
-			&& sonicInches < 30)
+		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
+		if (sonicInches > 46
+			&& sonicInches < 5)
 			sonicHotZone = true;
 		else
 			sonicHotZone = false;
@@ -120,25 +108,11 @@ void robot::feed()
  */
 void robot::dashSend()
 {
-	static int count = 0;
-	
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
 	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
-	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
-		
-	/*SmartDashboard::PutNumber("Left Motors",
-			-driver->GetRawAxis(xbox::axis::leftY));
-	SmartDashboard::PutNumber("Right Motors",
-			-driver->GetRawAxis(xbox::axis::rightY));
-	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());*/
-	
-	sonicLog[count] = sonicInches;
-	if (count++ == DASH_UPDATE)
-	{
-		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
-		count = 0;
-	}
+	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
+	std::cout << setw(10) << "sonicInches: " << sonicInches << endl;
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicHotZone);
 }
 
