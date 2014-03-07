@@ -38,9 +38,7 @@ void robot::Autonomous()
 {
 	//float wdExpire = GetWatchdog().GetExpiration();
 	elChuro->autoRun(1);
-	Wait(.2);
-	feed();
-	pult->load();																								
+	Wait(.2);																							
 	feed();
 	Wait(.5);
 	feed();
@@ -50,12 +48,15 @@ void robot::Autonomous()
 	while (sonicInches > 30)
 	{
 		elChuro->autoRun(-.5);
-		move->move(.65, .5);
+		move->move(.55, .5);
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 		feed();
 	}
 	feed();
 	move->stop();
+	
+	feed();
+	pult->load();	
 	
 	//pult->autoLaunch();
 	feed();
