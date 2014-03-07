@@ -36,24 +36,26 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	float wdExpire = GetWatchdog().GetExpiration();
+	//float wdExpire = GetWatchdog().GetExpiration();
 	elChuro->autoRun(1);
 	Wait(.2);
 	feed();
-	//pult->load();
+	pult->load();																								
 	feed();
 	Wait(.5);
 	feed();
 	
+	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 	//drive
-	elChuro->autoRun(-.5);
-	move->move(.5, .5);
-	GetWatchdog().SetExpiration(4.3);
-	Wait(4.2);
+	while (sonicInches > 30)
+	{
+		elChuro->autoRun(-.5);
+		move->move(.65, .5);
+		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
+		feed();
+	}
 	feed();
-	GetWatchdog().SetExpiration(wdExpire);
 	move->stop();
-	feed();
 	
 	//pult->autoLaunch();
 	feed();
@@ -69,10 +71,24 @@ void robot::OperatorControl()
 	{
 		move->remoteDrive();
 		elChuro->run();
-		feed();
 		pult->remoteLaunch();
-		feed();
-		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
+		
+		for (int i = SONIC_SAMPLE; i > 0; i--)
+		{
+			sonicLog[i] = sonicLog[i-1];
+		}
+		sonicInches = 0.;
+		for (int i = 0; i < SONIC_SAMPLE; i++)
+		{
+			if (sonicLog[i] > sonicInches)
+				sonicInches = sonicLog[i];
+		}
+		if (sonicInches > 18
+			&& sonicInches < 30)
+			sonicHotZone = true;
+		else
+			sonicHotZone = false;
+		
 		dashSend();
 		feed();
 	}
@@ -110,34 +126,19 @@ void robot::dashSend()
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
 	SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
 		
-	SmartDashboard::PutNumber("Left Motors",
+	/*SmartDashboard::PutNumber("Left Motors",
 			-driver->GetRawAxis(xbox::axis::leftY));
 	SmartDashboard::PutNumber("Right Motors",
 			-driver->GetRawAxis(xbox::axis::rightY));
-	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());
-	feed();
+	SmartDashboard::PutNumber("Speed Multiplier", move->getSpeedMult());*/
 	
 	sonicLog[count] = sonicInches;
-	if (count == SONIC_SAMPLE)
+	if (count++ == DASH_UPDATE)
 	{
-		feed();
-		for (int i = 0; i < SONIC_SAMPLE; i++)
-		{
-			if (sonicLog[i] > sonicInches)
-				sonicInches = sonicLog[i];
-		}
-		feed();
 		SmartDashboard::PutNumber("Ultrasonic", sonicInches);
-		if (sonicInches > 18
-			&& sonicInches < 30)
-			sonicHotZone = true;
-		else
-			sonicHotZone = false;
 		count = 0;
 	}
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicHotZone);
-	count++;
-	feed();
 }
 
 START_ROBOT_CLASS(robot);

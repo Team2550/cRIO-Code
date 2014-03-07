@@ -9,6 +9,7 @@
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
 const int SONIC_SAMPLE = 10;
+const int DASH_UPDATE = 20;
 
 //Volts/inch of Ultrasonic sensor
 const double VOLTS_INCH = 0.009765625;//5/512
