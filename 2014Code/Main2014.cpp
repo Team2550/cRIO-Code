@@ -4,6 +4,7 @@ robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	GetWatchdog().SetEnabled(true);
+	wdExpire = GetWatchdog().GetExpiration();
 	
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
@@ -35,7 +36,7 @@ robot::~robot()
 }
 
 void robot::Autonomous()
-{
+{	
 	comp->Start();
 	elChuro->autoRun(1);
 	move->move(.55, .5);
@@ -47,8 +48,7 @@ void robot::Autonomous()
 	feed();
 	
 	//drive
-	int loopCount = 0;
-	do
+	/*do
 	{
 		move->move(.55, .5);
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
@@ -57,18 +57,22 @@ void robot::Autonomous()
 		if (sonicInches < 20)
 			sonicInches = 49;
 		feed();
-		loopCount++;
-	} while (sonicInches > 48);
-	cout << loopCount << endl;
+	} while (sonicInches > 48);*/
+	move->move(.55, .5);
+	GetWatchdog().SetExpiration(4.3);
+	Wait(4.2);
+	feed();
+	GetWatchdog().SetExpiration(wdExpire);
 	move->stop();	
+	feed();
 	
-	for (int i = 0; i < 15; i++)
+	/*for (int i = 0; i < 15; i++)
 	{
 		Wait(.1);
 		feed();
 	}
 	pult->autoLaunch();
-	feed();
+	feed();*/
 }
 
 void robot::OperatorControl()
@@ -78,7 +82,10 @@ void robot::OperatorControl()
 	{
 		move->remoteDrive();
 		elChuro->run();
+		
+		GetWatchdog().SetExpiration(1.25);
 		pult->remoteLaunch();
+		GetWatchdog().SetExpiration(wdExpire);
 		
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 		if (sonicInches > 46

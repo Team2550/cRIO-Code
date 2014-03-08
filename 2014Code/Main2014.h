@@ -40,6 +40,7 @@ class robot : public SimpleRobot
 		AnalogChannel* sonic;
 		long double sonicInches;
 		bool sonicHotZone;
+		float wdExpire;
 };
 
 #endif
