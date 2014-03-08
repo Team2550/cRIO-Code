@@ -36,29 +36,38 @@ robot::~robot()
 
 void robot::Autonomous()
 {
-	//float wdExpire = GetWatchdog().GetExpiration();
+	comp->Start();
 	elChuro->autoRun(1);
-	Wait(.2);																							
-	feed();
-	
 	move->move(.55, .5);
+	feed();
 	Wait(.5);
 	pult->load();
 	feed();
+	elChuro->autoRun(0);
+	feed();
 	
-	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 	//drive
-	while (sonicInches > 48)
+	int loopCount = 0;
+	do
 	{
+		move->move(.55, .5);
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
+		//This if statement appears to be necessary
+		//in order to deal with some erratic values from the ultrasonic sensor.
+		if (sonicInches < 20)
+			sonicInches = 49;
 		feed();
-	}
+		loopCount++;
+	} while (sonicInches > 48);
+	cout << loopCount << endl;
 	move->stop();	
 	
-	//pult->autoLaunch();
-	feed();
-	elChuro->autoRun(0);
-	comp->Start();
+	for (int i = 0; i < 15; i++)
+	{
+		Wait(.1);
+		feed();
+	}
+	pult->autoLaunch();
 	feed();
 }
 
