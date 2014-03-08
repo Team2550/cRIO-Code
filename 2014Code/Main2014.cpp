@@ -88,8 +88,8 @@ void robot::OperatorControl()
 		GetWatchdog().SetExpiration(wdExpire);
 		
 		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
-		if (sonicInches > 46
-			&& sonicInches < 5)
+		if (sonicInches > 66
+			&& sonicInches < 74)
 			sonicHotZone = true;
 		else
 			sonicHotZone = false;
