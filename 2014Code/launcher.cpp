@@ -46,7 +46,7 @@ void launcher::autoLaunch()
 	trigger->Set(DoubleSolenoid::kReverse);
 	Wait(.1);
 	pistons->fwd();
-	Wait(.5);
+	Wait(1);
 	trigger->Set(DoubleSolenoid::kForward);
 	launchStatus = false;
 	triggerStatus = true;
