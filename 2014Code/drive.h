@@ -17,8 +17,8 @@ class Drive
 	private:
 		Joystick* stick;
 		//left and right drive motors
-		Jaguar* left;
-		Jaguar* right;
+		Victor* left;
+		Victor* right;
 		float speedMult;//speed multiplier
 };
 
