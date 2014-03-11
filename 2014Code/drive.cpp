@@ -4,8 +4,8 @@ Drive::Drive(const int stickPort)
 {
 	stick = new Joystick(stickPort);
 	//motor creation
-	left = new Jaguar(1);
-	right = new Jaguar(2);
+	left = new Victor(1);
+	right = new Victor(2);
 	speedMult = .65;
 }
 Drive::~Drive()
