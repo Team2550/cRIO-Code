@@ -1,10 +1,9 @@
 #include "Main2014.h"
 
-robot::robot()
+void robot::RobotInit()
 {
 	//Watchdog must be enabled for the competition
 	GetWatchdog().SetEnabled(true);
-	wdExpire = GetWatchdog().GetExpiration();
 	
 	//CONTROL
 	driver = new Joystick(DRIVER_PORT);
@@ -21,10 +20,12 @@ robot::robot()
 	//ULTRASONIC SENSOR
 	sonic = new AnalogChannel(2);
 	sonicInches = 0;
+	for (int i = 0; i < SONIC_SAMPLE; i++)
+		sonicLog[i] = 0;
 	sonicHotZone = false;
 	feed();
 }
-robot::~robot()
+/*robot::~robot()
 {
 	delete driver;
 	delete pultCtrl;
@@ -33,9 +34,9 @@ robot::~robot()
 	delete comp;
 	delete pult;
 	delete sonic;
-}
+}*/
 
-void robot::Autonomous()
+void robot::AutonomousInit()
 {	
 	comp->Start();
 	elChuro->autoRun(1);
@@ -59,47 +60,44 @@ void robot::Autonomous()
 		feed();
 	} while (sonicInches > 48);*/
 	move->move(.55, .5);
-	GetWatchdog().SetExpiration(4.3);
-	Wait(4.2);
-	feed();
-	GetWatchdog().SetExpiration(wdExpire);
-	move->stop();	
-	feed();
-	
+	for (int i = 0; i < 42; i++)//wait 4.2 seconds
+	{
+		Wait(.1);
+		feed();
+	}
+	move->stop();
 	/*for (int i = 0; i < 15; i++)
 	{
 		Wait(.1);
 		feed();
 	}
-	pult->autoLaunch();
-	feed();*/
+	pult->autoLaunch();*/
+	feed();
 }
 
-void robot::OperatorControl()
+void robot::TeleopPeriodic()
 {
-	comp->Start();
-	while (IsOperatorControl())
-	{
-		move->remoteDrive();
-		elChuro->run();
-		
-		GetWatchdog().SetExpiration(1.25);
-		pult->remoteLaunch();
-		GetWatchdog().SetExpiration(wdExpire);
-		
-		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
-		if (sonicInches > 66
-			&& sonicInches < 74)
-			sonicHotZone = true;
-		else
-			sonicHotZone = false;
-		
-		dashSend();
-		feed();
-	}
+	move->remoteDrive();
+	elChuro->run();
 	
-	comp->Stop();
+	GetWatchdog().SetExpiration(1.25);
+	pult->remoteLaunch();
+	GetWatchdog().SetExpiration(wdExpire);
+	
+	dashSend();
+	feed();
 }
+
+void robot::TeleopContinouous()
+{
+	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
+	if (sonicInches > 66
+		&& sonicInches < 74)
+		sonicHotZone = true;
+	else
+		sonicHotZone = false;
+}
+
 /*
  * FUNCTION: feed
  * DESCRIPTION: just makes feeding watchdog line less overwhelming
