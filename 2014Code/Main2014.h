@@ -22,13 +22,13 @@ class robot : public IterativeRobot
 		void AutonomousInit();
 		void TeleopInit();
 		void TeleopPeriodic();
-		void TeleopContinouous();
 		void DisabledInit();
 		void DisabledPeriodic();
 		
 		void feed();
 		void dashSend();
-	private:		
+	private:
+		~robot();
 		//CONTROL
 		Joystick* driver;
 		Joystick* pultCtrl;
@@ -38,7 +38,7 @@ class robot : public IterativeRobot
 		lift* elChuro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS
-		Compressor comp; //short for compressor
+		Compressor* comp; //short for compressor
 		launcher* pult; //short for catapult
 		
 		//ULTRASONIC
