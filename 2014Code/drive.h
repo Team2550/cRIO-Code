@@ -16,7 +16,7 @@ class Drive
 		float getSpeedMult();
 	private:
 		Joystick* stick;
-		//left and right drive motors
+		//left and right Drive motors
 		Victor* left;
 		Victor* right;
 		float speedMult;//speed multiplier

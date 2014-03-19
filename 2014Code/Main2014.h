@@ -4,9 +4,9 @@
 #include <iomanip>
 #include "WPILib.h"
 #include "xBox.h"
-#include "drive.h"
-#include "launcher.h"
-#include "lift.h"
+#include "Drive.h"
+#include "Launcher.h"
+#include "Lift.h"
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
@@ -18,6 +18,7 @@ const int SONIC_SAMPLE = 10;
 class robot : public IterativeRobot
 {
 	public:
+		robot();
 		void RobotInit();
 		void AutonomousInit();
 		void TeleopInit();
@@ -30,16 +31,16 @@ class robot : public IterativeRobot
 	private:
 		~robot();
 		//CONTROL
-		Joystick* driver;
+		Joystick* Driver;
 		Joystick* pultCtrl;
 		
 		//motors
 		Drive* move;
-		lift* elChuro;//the ball pickupper... nicknamed El Toro
+		Lift* elChuro;//the ball pickupper... nicknamed El Toro
 		
 		//PNEUMATICS
 		Compressor* comp; //short for compressor
-		launcher* pult; //short for catapult
+		Launcher* pult; //short for catapult
 		
 		//ULTRASONIC
 		AnalogChannel* sonic;
