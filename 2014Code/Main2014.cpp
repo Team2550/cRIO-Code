@@ -25,7 +25,7 @@ void robot::RobotInit()
 	sonicHotZone = false;
 	feed();
 }
-/*robot::~robot()
+robot::~robot()
 {
 	delete driver;
 	delete pultCtrl;
@@ -34,11 +34,10 @@ void robot::RobotInit()
 	delete comp;
 	delete pult;
 	delete sonic;
-}*/
+}
 
 void robot::AutonomousInit()
 {	
-	comp->Start();
 	elChuro->autoRun(1);
 	move->move(.55, .5);
 	feed();
@@ -80,22 +79,20 @@ void robot::TeleopPeriodic()
 	move->remoteDrive();
 	elChuro->run();
 	
+	const double wdExpire = GetWatchdog().GetExpiration();
 	GetWatchdog().SetExpiration(1.25);
 	pult->remoteLaunch();
 	GetWatchdog().SetExpiration(wdExpire);
 	
-	dashSend();
-	feed();
-}
-
-void robot::TeleopContinouous()
-{
 	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
 	if (sonicInches > 66
 		&& sonicInches < 74)
 		sonicHotZone = true;
 	else
 		sonicHotZone = false;
+	
+	dashSend();
+	feed();
 }
 
 /*
