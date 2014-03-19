@@ -1,6 +1,6 @@
-#include "launcher.h"
+#include "Launcher.h"
 
-launcher::launcher(const int ctrlPort, const int confirmPort)
+Launcher::Launcher(const int ctrlPort, const int confirmPort)
 {
 	pistons = new DoublePiston(1,2,3,4);
 	trigger = new DoubleSolenoid(5,6);
@@ -13,7 +13,7 @@ launcher::launcher(const int ctrlPort, const int confirmPort)
 	launchStatus = false; 
 }
 
-launcher::~launcher()
+Launcher::~Launcher()
 {
 	delete ctrlStick;
 	delete confirmStick;
@@ -26,7 +26,7 @@ launcher::~launcher()
  * DESCRIPTION: put the catapult in a loadable position (pull it back).
  * 	Make sure trigger is released
  */
-void launcher::load()
+void Launcher::load()
 {
 	trigger->Set(DoubleSolenoid::kForward);
 	pistons->back();
@@ -41,7 +41,7 @@ void launcher::load()
  * 	Apply pressure to pistons for launch
  * 	Release trigger
  */
-void launcher::autoLaunch()
+void Launcher::autoLaunch()
 {
 	trigger->Set(DoubleSolenoid::kReverse);
 	Wait(.1);
@@ -55,10 +55,10 @@ void launcher::autoLaunch()
 /*
  * FUNCTION: remoteLaunch
  * DESCRIPTION: gets joystick input and preforms actions based upon that.
- * 	In order to launch, the driver must confirm by pressing and holding B while the
+ * 	In order to launch, the Driver must confirm by pressing and holding B while the
  * 	launch controller presses RB
  */
-void launcher::remoteLaunch()
+void Launcher::remoteLaunch()
 {
 	//launch
 	if (ctrlStick->GetRawButton(xbox::btn::rb) && confirmStick->GetRawButton(xbox::btn::b))
@@ -79,12 +79,12 @@ void launcher::remoteLaunch()
 	}
 }
 
-bool launcher::getLaunchStatus()
+bool Launcher::getLaunchStatus()
 {
 	return launchStatus;
 }
 
-bool launcher::getTriggerStatus()
+bool Launcher::getTriggerStatus()
 {
 	return triggerStatus;
 }

@@ -5,7 +5,7 @@
 #include "xBox.h"
 #include "DoublePiston.h"
 
-class launcher
+class Launcher
 {
 	private:
 		//Joystick* stick;
@@ -16,8 +16,8 @@ class launcher
 		bool launchStatus;
 		bool triggerStatus;
 	public:
-		launcher(const int ctrlPort, const int confirmPort);
-		~launcher();
+		Launcher(const int ctrlPort, const int confirmPort);
+		~Launcher();
 		void load();
 		void autoLaunch();
 		void remoteLaunch();

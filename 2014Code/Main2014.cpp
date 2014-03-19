@@ -1,24 +1,28 @@
 #include "Main2014.h"
 
-void robot::RobotInit()
+robot::robot()
 {
 	//Watchdog must be enabled for the competition
 	GetWatchdog().SetEnabled(true);
 	
 	//CONTROL
-	driver = new Joystick(DRIVER_PORT);
+	Driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
 	move = new Drive(DRIVER_PORT);
-	elChuro = new lift(PULT_CTRL_PORT);
+	elChuro = new Lift(PULT_CTRL_PORT);
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
-	pult = new launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	pult = new Launcher(PULT_CTRL_PORT, DRIVER_PORT);
 	
-	//ULTRASONIC SENSOR
 	sonic = new AnalogChannel(2);
+}
+
+void robot::RobotInit()
+{
+	//ULTRASONIC SENSOR
 	sonicInches = 0;
 	for (int i = 0; i < SONIC_SAMPLE; i++)
 		sonicLog[i] = 0;
@@ -27,7 +31,7 @@ void robot::RobotInit()
 }
 robot::~robot()
 {
-	delete driver;
+	delete Driver;
 	delete pultCtrl;
 	delete move;
 	delete elChuro;
@@ -47,7 +51,7 @@ void robot::AutonomousInit()
 	elChuro->autoRun(0);
 	feed();
 	
-	//drive
+	//Drive
 	/*do
 	{
 		move->move(.55, .5);
@@ -110,7 +114,7 @@ void robot::feed()
  * DESCRIPTION: send SmartDashboard collected data
  * DATA SENT:
  * 	compressor status (running?)
- * 	launcher status (ready?)
+ * 	Launcher status (ready?)
  * 	trigger status (ready?)
  * 	El Toro status (running? direction?)
  * 	left motor status (speed? direction?)

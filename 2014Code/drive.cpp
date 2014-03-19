@@ -1,4 +1,4 @@
-#include "drive.h"
+#include "Drive.h"
 
 Drive::Drive(const int stickPort)
 {
@@ -23,7 +23,7 @@ void Drive::move(float leftS, float rightS)
 
 /*
  * FUNCTION: stop
- * DESCRIPTION: stops all drive motors
+ * DESCRIPTION: stops all Drive motors
  */
 void Drive::stop()
 {
@@ -68,7 +68,7 @@ void Drive::remoteDrive()
 
 /*
  * FUNCTION: getSpeedMult
- * RETURN: speed multiplier of drive object
+ * RETURN: speed multiplier of Drive object
  */
 float Drive::getSpeedMult()
 {
