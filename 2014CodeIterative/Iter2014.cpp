@@ -1,4 +1,4 @@
-#include "Main2014.h"
+#include "Iter2014.h"
 
 robot::robot()
 {
@@ -20,15 +20,6 @@ robot::robot()
 	//ULTRASONIC SENSOR
 	sonic = new AnalogChannel(2);
 }
-
-void robot::RobotInit()
-{
-	sonicInches = 0;
-	for (int i = 0; i < SONIC_SAMPLE; i++)
-		sonicLog[i] = 0;
-	sonicHotZone = false;
-	feed();
-}
 robot::~robot()
 {
 	delete Driver;
@@ -39,9 +30,19 @@ robot::~robot()
 	delete pult;
 	delete sonic;
 }
+/////////////////////////////////////////////////////////////
+void robot::RobotInit()
+{
+	feed();
+}
 
 void robot::AutonomousInit()
 {	
+	//fill the ultrasonic sensor array so that averaging
+	//is accurate
+	for (int i = 0; i < SONIC_SAMPLE * 2; i++)
+		sonicRead();
+	
 	elChuro->autoRun(1);
 	move->move(.55, .5);
 	feed();
@@ -52,16 +53,6 @@ void robot::AutonomousInit()
 	feed();
 	
 	//Drive
-	/*do
-	{
-		move->move(.55, .5);
-		sonicInches = sonic->GetVoltage() / VOLTS_INCH;
-		//This if statement appears to be necessary
-		//in order to deal with some erratic values from the ultrasonic sensor.
-		if (sonicInches < 20)
-			sonicInches = 49;
-		feed();
-	} while (sonicInches > 48);*/
 	move->move(.55, .5);
 	for (int i = 0; i < 42; i++)//wait 4.2 seconds
 	{
@@ -78,6 +69,16 @@ void robot::AutonomousInit()
 	feed();
 }
 
+void robot::AutonomousPeriodic()
+{
+
+}
+/////////////////////////////////////////////////////////////////////////
+void robot::TeleopInit()
+{
+
+}
+
 void robot::TeleopPeriodic()
 {
 	move->remoteDrive();
@@ -87,18 +88,21 @@ void robot::TeleopPeriodic()
 	GetWatchdog().SetExpiration(1.25);
 	pult->remoteLaunch();
 	GetWatchdog().SetExpiration(wdExpire);
-	
-	sonicInches = sonic->GetVoltage() / VOLTS_INCH;
-	if (sonicInches > 66
-		&& sonicInches < 74)
-		sonicHotZone = true;
-	else
-		sonicHotZone = false;
-	
+
 	dashSend();
 	feed();
 }
+///////////////////////////////////////////////////////////////////
+void robot::DisabledInit()
+{
+	
+}
 
+void robot::DisabledPeriodic()
+{
+	dashSend();
+}
+///////////////////////////////////////////////////////////////////
 /*
  * FUNCTION: feed
  * DESCRIPTION: just makes feeding watchdog line less overwhelming
@@ -111,24 +115,47 @@ void robot::feed()
 
 /*
  * FUNCTION: dashSend
- * DESCRIPTION: send SmartDashboard collected data
- * DATA SENT:
- * 	compressor status (running?)
- * 	Launcher status (ready?)
- * 	trigger status (ready?)
- * 	El Toro status (running? direction?)
- * 	left motor status (speed? direction?)
- * 	right motor status (speed? direction?)
- * 	speed multiplier
+ * DESCRIPTION: send data to the driverstation
  */
 void robot::dashSend()
 {
 	SmartDashboard::PutBoolean("Compressor", comp->GetPressureSwitchValue());
 	SmartDashboard::PutBoolean("Launcher", pult->getLaunchStatus());
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
-	//SmartDashboard::PutNumber("El Toro", -pultCtrl->GetRawAxis(xbox::axis::leftY));
-	std::cout << setw(10) << "sonicInches: " << sonicInches << endl;
-	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicHotZone);
+	
+	SonicData sonicIn = sonicRead();
+	std::cout << setw(10) << "Inches: " << sonicIn.avg << "NAVG: " << sonic->GetVoltage() / VOLTS_INCH << endl;
+	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicIn.hotZone);
 }
+
+//Averages and returns the inch reading of the ultrasonic sensor
+//Updates sonicHotZone
+SonicData robot::sonicRead()
+{
+	static long double sonicLog[SONIC_SAMPLE];
+	SonicData out;
+	out.avg = 0;
+	
+	//shift sonicLog data
+	sonicLog[SONIC_SAMPLE - 1] = sonicLog[SONIC_SAMPLE - 2];//shift last value
+	for (int i = 1; i < SONIC_SAMPLE - 1; i++)//shift mid values
+		sonicLog[i] = sonicLog[i - 1];
+	sonicLog[0] = sonic->GetVoltage() / VOLTS_INCH;//add new 1st value
+	
+	//get the average of sonicLog
+	for(int i = 0; i < SONIC_SAMPLE; i++)
+		out.avg += sonicLog[i];
+	out.avg /= SONIC_SAMPLE;
+	
+	//Check for hot zone
+	if (out.avg > 66
+		&& out.avg < 74)
+		out.hotZone = true;
+	else
+		out.hotZone = false;
+	
+	return out;
+}
+
 
 START_ROBOT_CLASS(robot);
