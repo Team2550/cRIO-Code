@@ -1,9 +1,9 @@
 #ifndef LIFT_H
 #define LIFT_H
 
+#include <math.h>
 #include "WPILib.h"
-#include "math.h"
-#include "xBox.h"
+#include "xBox.hh"
 
 class Lift
 {

@@ -1,4 +1,4 @@
-#include "DoublePiston.h"
+#include "DoublePiston.hh"
 
 DoublePiston::DoublePiston(const int port1, const int port2,
 		const int port3, const int port4)
