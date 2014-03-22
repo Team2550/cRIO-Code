@@ -25,9 +25,8 @@ struct SonicData
 class robot : public IterativeRobot
 {
 	private:
-		~robot();
 		//CONTROL
-		Joystick* Driver;
+		Joystick* driver;
 		Joystick* pultCtrl;
 		
 		//motors
@@ -39,9 +38,10 @@ class robot : public IterativeRobot
 		Launcher* pult; //short for catapult
 		
 		AnalogChannel* sonic;//ultrasonic sensor
-		
+				
 	public:
 		robot();
+		~robot();
 		void RobotInit();
 		void AutonomousInit();
 		void AutonomousPeriodic();
@@ -53,6 +53,9 @@ class robot : public IterativeRobot
 		void feed();
 		void dashSend();
 		SonicData sonicRead();
+		
+		//ROBOT STATES
+		
 };
 
 #endif

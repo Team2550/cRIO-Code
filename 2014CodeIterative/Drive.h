@@ -7,15 +7,14 @@
 class Drive
 {
 	public:
-		Drive(const int stickPort);
+		Drive();
 		~Drive();
 
-		void move(float leftS, float rightS);
-		void remoteDrive();
+		void move(float leftSpeed, float rightSpeed);
+		void remoteDrive(float leftStick, float rightStick, bool boost);
 		void stop();
 		float getSpeedMult();
 	private:
-		Joystick* stick;
 		//left and right Drive motors
 		Victor* left;
 		Victor* right;
