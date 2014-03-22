@@ -5,22 +5,26 @@
 #include "xBox.h"
 #include "DoublePiston.h"
 
+enum LaunchState
+{
+	launch,
+	load,
+	triggerBack,
+	triggerFwd
+};
+
 class Launcher
 {
 	private:
 		//Joystick* stick;
 		DoublePiston* pistons;
 		DoubleSolenoid* trigger;
-		Joystick* ctrlStick;
-		Joystick* confirmStick;
 		bool launchStatus;
 		bool triggerStatus;
 	public:
-		Launcher(const int ctrlPort, const int confirmPort);
+		Launcher();
 		~Launcher();
-		void load();
-		void autoLaunch();
-		void remoteLaunch();
+		void setState(LaunchState state);
 		bool getLaunchStatus();
 		bool getTriggerStatus();
 };

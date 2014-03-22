@@ -1,8 +1,7 @@
 #include "Drive.h"
 
-Drive::Drive(const int stickPort)
+Drive::Drive()
 {
-	stick = new Joystick(stickPort);
 	//motor creation
 	left = new Victor(1);
 	right = new Victor(2);
@@ -10,15 +9,14 @@ Drive::Drive(const int stickPort)
 }
 Drive::~Drive()
 {
-	delete stick; 
 	delete left;
 	delete right;
 }
 
-void Drive::move(float leftS, float rightS)
+void Drive::move(float leftSpeed, float rightSpeed)
 {
-	left->Set(leftS);
-	right->Set(-rightS);
+	left->Set(leftSpeed);
+	right->Set(-rightSpeed);
 }
 
 /*
@@ -41,13 +39,8 @@ void Drive::stop()
  * 	(I) stick - the joystick to use for input
  * 		pointed due to WPILib size
  */
-void Drive::remoteDrive()
-{
-	//See documentation repository on Git server for axis
-		//mappings of xbox controller
-	float leftStick = stick->GetRawAxis(xbox::axis::leftY);
-	float rightStick = stick->GetRawAxis(xbox::axis::rightY);
-	
+void Drive::remoteDrive(float leftStick, float rightStick, bool boost)
+{	
 	//basic movements
 	//fabs() is the float version of abs()
 	if (fabs(leftStick) > 0.2)//number accounts for dead zone
@@ -60,7 +53,7 @@ void Drive::remoteDrive()
 		right->Set(0);
 	
 	//speed limiting
-	if (stick->GetRawButton(xbox::btn::rb))
+	if (boost)
 		speedMult = 1;
 	else
 		speedMult = .65;

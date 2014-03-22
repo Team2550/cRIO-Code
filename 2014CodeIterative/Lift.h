@@ -8,14 +8,13 @@
 class Lift
 {
 	private:
-		Joystick* stick;
 		Victor* a;
 		Victor* b;
 	public:
-		Lift(const int stickPort);
+		Lift();
 		~Lift();
 		void autoRun(float speed);
-		void run();
+		void run(float stickStatus);
 };
 
 #endif

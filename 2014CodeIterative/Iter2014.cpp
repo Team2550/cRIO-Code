@@ -6,23 +6,23 @@ robot::robot()
 	GetWatchdog().SetEnabled(true);
 	
 	//CONTROL
-	Driver = new Joystick(DRIVER_PORT);
+	driver = new Joystick(DRIVER_PORT);
 	pultCtrl = new Joystick(PULT_CTRL_PORT);
 	
 	//MOTORS
-	move = new Drive(DRIVER_PORT);
-	elChuro = new Lift(PULT_CTRL_PORT);
+	move = new Drive();
+	elChuro = new Lift();
 
 	//PNEUMATICS
 	comp = new Compressor(1, 1);
-	pult = new Launcher(PULT_CTRL_PORT, DRIVER_PORT);
+	pult = new Launcher();
 	
 	//ULTRASONIC SENSOR
 	sonic = new AnalogChannel(2);
 }
 robot::~robot()
 {
-	delete Driver;
+	delete driver;
 	delete pultCtrl;
 	delete move;
 	delete elChuro;
@@ -33,21 +33,21 @@ robot::~robot()
 /////////////////////////////////////////////////////////////
 void robot::RobotInit()
 {
+	//fill the ultrasonic sensor array so that averaging
+	//is accurate
+	for (int i = 0; i < SONIC_SAMPLE * 2; i++)
+		sonicRead();
 	feed();
 }
 
 void robot::AutonomousInit()
 {	
-	//fill the ultrasonic sensor array so that averaging
-	//is accurate
-	for (int i = 0; i < SONIC_SAMPLE * 2; i++)
-		sonicRead();
-	
+	pult->setState(triggerBack);
 	elChuro->autoRun(1);
 	move->move(.55, .5);
 	feed();
 	Wait(.5);
-	pult->load();
+	pult->setState(load);
 	feed();
 	elChuro->autoRun(0);
 	feed();
@@ -65,7 +65,7 @@ void robot::AutonomousInit()
 		Wait(.1);
 		feed();
 	}
-	pult->autoLaunch();*/
+	pult->setState(LaunchState::launch);*/
 	feed();
 }
 
@@ -81,13 +81,25 @@ void robot::TeleopInit()
 
 void robot::TeleopPeriodic()
 {
-	move->remoteDrive();
-	elChuro->run();
+	move->remoteDrive(driver->GetRawAxis(xbox::axis::leftY),
+					  driver->GetRawAxis(xbox::axis::rightY),
+					  driver->GetRawButton(xbox::btn::rb));
+	elChuro->run(pultCtrl->GetRawAxis(xbox::axis::leftY));
 	
-	const double wdExpire = GetWatchdog().GetExpiration();
-	GetWatchdog().SetExpiration(1.25);
-	pult->remoteLaunch();
-	GetWatchdog().SetExpiration(wdExpire);
+	//Launcher control
+	if (pultCtrl->GetRawButton(xbox::btn::rb) && driver->GetRawButton(xbox::btn::b))
+	{
+		const double wdExpire = GetWatchdog().GetExpiration();
+		GetWatchdog().SetExpiration(1.25);
+		pult->setState(launch);
+		GetWatchdog().SetExpiration(wdExpire);
+	}
+	else if (pultCtrl->GetRawButton(xbox::btn::lb)) 
+		pult->setState(load);
+	else if (pultCtrl->GetRawButton(xbox::btn::y))
+		pult->setState(triggerBack);
+	else if (pultCtrl->GetRawButton(xbox::btn::x))
+		pult->setState(triggerFwd);
 
 	dashSend();
 	feed();
@@ -124,7 +136,7 @@ void robot::dashSend()
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
 	
 	SonicData sonicIn = sonicRead();
-	std::cout << setw(10) << "Inches: " << sonicIn.avg << "NAVG: " << sonic->GetVoltage() / VOLTS_INCH << endl;
+	std::cout << setw(10) << "ULTRASONIC IN: " << sonicIn.avg << std::endl;
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicIn.hotZone);
 }
 

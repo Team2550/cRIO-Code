@@ -1,15 +1,13 @@
 #include "Lift.h"
 
-Lift::Lift(const int stickPort)
+Lift::Lift()
 {
-	stick = new Joystick(stickPort);
 	a = new Victor(3);
 	b = new Victor(4);
 }
 
 Lift::~Lift()
 {
-	delete stick;
 	delete a;
 	delete b;
 }
@@ -26,9 +24,8 @@ void Lift::autoRun(float speed)
 		b->Set(speed / 2);
 }
 
-void Lift::run()
+void Lift::run(float stickStatus)
 {
-	float stickStatus = stick->GetRawAxis(xbox::axis::leftY);
 	if (fabs(stickStatus) > .2)
 	{
 		a->Set(stickStatus);
