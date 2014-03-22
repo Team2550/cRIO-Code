@@ -2,8 +2,8 @@
 #define LAUNCHER_H
 
 #include "WPILib.h"
-#include "xBox.h"
-#include "DoublePiston.h"
+#include "xBox.hh"
+#include "DoublePiston.hh"
 
 enum LaunchState
 {

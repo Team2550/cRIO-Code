@@ -3,10 +3,10 @@
 #include <iostream>
 #include <iomanip>
 #include "WPILib.h"
-#include "xBox.h"
-#include "Drive.h"
-#include "Launcher.h"
-#include "Lift.h"
+#include "xBox.hh"
+#include "Drive.hh"
+#include "Launcher.hh"
+#include "Lift.hh"
 
 const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;

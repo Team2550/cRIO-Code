@@ -1,4 +1,4 @@
-#include "Lift.h"
+#include "Lift.hh"
 
 Lift::Lift()
 {
