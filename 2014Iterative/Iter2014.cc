@@ -44,7 +44,7 @@ void robot::AutonomousInit()
 {	
 	pult->setState(triggerBack);
 	elChuro->autoRun(1);
-	move->move(.55, .5);
+	//move->move(.25, .2);
 	feed();
 	Wait(.5);
 	pult->setState(load);
@@ -53,25 +53,68 @@ void robot::AutonomousInit()
 	feed();
 	
 	//Drive
-	move->move(.55, .5);
-	for (int i = 0; i < 42; i++)//wait 4.2 seconds
+	/*for (int i = 0; i < 42; i++)//wait 4.2 seconds
 	{
 		Wait(.1);
 		feed();
-	}
-	move->stop();
-	/*for (int i = 0; i < 15; i++)
-	{
-		Wait(.1);
-		feed();
-	}
-	pult->setState(LaunchState::launch);*/
+	}*/
+	//move->move(.55, .5);
+	//move->stop();
+	//pult->setState(launch);
 	feed();
 }
 
 void robot::AutonomousPeriodic()
 {
-
+	bool done = false;
+	if (done == false)
+	{
+		if (sonicRead().hotZone == true)
+		{
+			move->stop();
+			//init and collect data
+			const int SONIC_CHECK = 5;
+			SonicData sonicCheck[SONIC_CHECK];
+			bool sonicValid;
+			for (int i = 0; i < SONIC_CHECK; i++)
+				sonicCheck[i] = sonicRead();
+			feed();
+			
+			//analyze data
+			bool runChecks = true;
+			int i = SONIC_CHECK - 1;
+			while (i >= 0 && runChecks == true)
+			{
+				if (sonicCheck[i].hotZone != true)
+				{
+					sonicValid = false;
+					runChecks = false;
+				}
+				i--;
+				feed();
+			}
+			
+			std::cout << sonicValid << " ";
+			
+			//make decision
+			if (sonicValid)
+			{
+				pult->setState(launch);
+				done = true;
+			}
+		}
+		else
+			move->move(.25, .2);
+		feed();
+	}
+	else
+	{
+		move->stop();
+		dashSend();
+	}
+	
+	feed();
+	std::cout << done << std::endl;
 }
 /////////////////////////////////////////////////////////////////////////
 void robot::TeleopInit()
@@ -160,8 +203,8 @@ SonicData robot::sonicRead()
 	out.avg /= SONIC_SAMPLE;
 	
 	//Check for hot zone
-	if (out.avg > 66
-		&& out.avg < 74)
+	if (out.avg > 68
+		&& out.avg < 72)
 		out.hotZone = true;
 	else
 		out.hotZone = false;
