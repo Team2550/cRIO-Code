@@ -45,8 +45,8 @@ void robot::AutonomousInit()
 	pult->setState(triggerBack);
 	elChuro->autoRun(1);
 	//move->move(.25, .2);
-	feed();
-	Wait(.5);
+	//feed();
+	//Wait(.5);
 	pult->setState(load);
 	feed();
 	elChuro->autoRun(0);
@@ -66,14 +66,17 @@ void robot::AutonomousInit()
 
 void robot::AutonomousPeriodic()
 {
-	bool done = false;
+	static bool done = false;
 	if (done == false)
 	{
 		if (sonicRead().hotZone == true)
 		{
 			move->stop();
+			bool sonicValid = false;
+			if (sonicRead().hotZone == true)
+				sonicValid = true;
 			//init and collect data
-			const int SONIC_CHECK = 5;
+			/*const int SONIC_CHECK = 5;
 			SonicData sonicCheck[SONIC_CHECK];
 			bool sonicValid;
 			for (int i = 0; i < SONIC_CHECK; i++)
@@ -96,7 +99,7 @@ void robot::AutonomousPeriodic()
 			
 			std::cout << sonicValid << " ";
 			
-			//make decision
+			//make decision*/
 			if (sonicValid)
 			{
 				pult->setState(launch);
