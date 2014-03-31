@@ -32,7 +32,7 @@ else
 MODE_DIR := NonDebug
 endif
 OBJ_DIR := .
-WS_ROOT_DIR := C:/Users/2550/Desktop/Code2550
+WS_ROOT_DIR := G:/FRC2550/RobotCode
 PRJ_ROOT_DIR := $(WS_ROOT_DIR)/Test
 
 
