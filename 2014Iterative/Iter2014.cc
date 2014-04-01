@@ -188,6 +188,7 @@ void robot::dashSend()
 	
 	SonicData sonicIn = sonicRead();
 	std::cout << setw(10) << "ULTRASONIC IN: " << sonicIn.avg << std::endl;
+	SmartDashboard::PutNumber("ULTRASONIC IN", sonicIn.avg);
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicIn.hotZone);
 }
 
@@ -195,13 +196,14 @@ void robot::dashSend()
 //Updates sonicHotZone
 SonicData robot::sonicRead()
 {
-	const int TOO_FAR = 72;
-	const int TOO_CLOSE = 68;
+	const int TOO_FAR = 74;
+	const int TOO_CLOSE = 66;
 	
 	//forward is fire
 	//reverse is too far
 	//off is too close
-	Relay indicatorLights(3);
+	Relay tooFarLight(2, Relay::kForwardOnly);
+	Relay hotZoneLight(3, Relay::kForwardOnly);
 	
 	static long double sonicLog[SONIC_SAMPLE];
 	SonicData out;
@@ -226,12 +228,17 @@ SonicData robot::sonicRead()
 		out.hotZone = false;
 	
 	//run indicator lights
-	if (out.hotZone)
-		indicatorLights.Set(Relay::kForward);
+	/*if (out.hotZone)
+		hotZoneLight.Set(Relay::kOn);
 	else if (out.avg >= TOO_FAR)
-		indicatorLights.Set(Relay::kReverse);
+		tooFarLight.Set(Relay::kOn);
 	else
-		indicatorLights.Set(Relay::kOff);
+	{
+		hotZoneLight.Set(Relay::kOff);
+		tooFarLight.Set(Relay::kOff);
+	}
+	
+	tooFarLight.Set(Relay::kOn);*/
 	
 	return out;
 }
