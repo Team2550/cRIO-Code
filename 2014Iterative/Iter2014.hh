@@ -13,7 +13,7 @@ const int PULT_CTRL_PORT = 2;
 
 //Ultrasonic Sensor
 const double VOLTS_INCH = 0.009765625;//5/512
-const int SONIC_SAMPLE = 30;
+const int SONIC_SAMPLE = 100;
 //Package for ultrasonic sensor data
 //Datatype returned by sonicRead function
 struct SonicData
