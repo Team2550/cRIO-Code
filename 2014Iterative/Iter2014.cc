@@ -66,7 +66,7 @@ void robot::AutonomousInit()
 
 void robot::AutonomousPeriodic()
 {
-	static bool done = false;
+	static bool done;
 	if (done == false)
 	{
 		if (sonicRead().hotZone == true)
@@ -105,9 +105,14 @@ void robot::AutonomousPeriodic()
 				pult->setState(launch);
 				done = true;
 			}
+			else
+				done = false;
 		}
 		else
+		{
 			move->move(.25, .2);
+			done = false;
+		}
 		feed();
 	}
 	else
@@ -190,6 +195,14 @@ void robot::dashSend()
 //Updates sonicHotZone
 SonicData robot::sonicRead()
 {
+	const int TOO_FAR = 72;
+	const int TOO_CLOSE = 68;
+	
+	//forward is fire
+	//reverse is too far
+	//off is too close
+	Relay indicatorLights(3);
+	
 	static long double sonicLog[SONIC_SAMPLE];
 	SonicData out;
 	out.avg = 0;
@@ -206,11 +219,19 @@ SonicData robot::sonicRead()
 	out.avg /= SONIC_SAMPLE;
 	
 	//Check for hot zone
-	if (out.avg > 68
-		&& out.avg < 72)
+	if (out.avg > TOO_CLOSE
+		&& out.avg < TOO_FAR)
 		out.hotZone = true;
 	else
 		out.hotZone = false;
+	
+	//run indicator lights
+	if (out.hotZone)
+		indicatorLights.Set(Relay::kForward);
+	else if (out.avg >= TOO_FAR)
+		indicatorLights.Set(Relay::kReverse);
+	else
+		indicatorLights.Set(Relay::kOff);
 	
 	return out;
 }
