@@ -41,32 +41,32 @@ void robot::RobotInit()
 }
 
 void robot::AutonomousInit()
-{	
-	pult->setState(triggerBack);
-	elChuro->autoRun(1);
-	//move->move(.25, .2);
+{
+	//pult->setState(triggerBack);
+	//elChuro->autoRun(1);
 	//feed();
 	//Wait(.5);
-	pult->setState(load);
+	//pult->setState(load);
 	feed();
-	elChuro->autoRun(0);
+	//elChuro->autoRun(0);
 	feed();
 	
 	//Drive
-	/*for (int i = 0; i < 42; i++)//wait 4.2 seconds
+	//96in/2s
+	move->move(.5, .45);
+	for (int i = 0; i < 20; i++)//wait with feed
 	{
 		Wait(.1);
 		feed();
-	}*/
-	//move->move(.55, .5);
-	//move->stop();
+	}
+	move->stop();
 	//pult->setState(launch);
 	feed();
 }
 
 void robot::AutonomousPeriodic()
 {
-	static bool done;
+	/*static bool done;
 	if (done == false)
 	{
 		if (sonicRead().hotZone == true)
@@ -76,7 +76,7 @@ void robot::AutonomousPeriodic()
 			if (sonicRead().hotZone == true)
 				sonicValid = true;
 			//init and collect data
-			/*const int SONIC_CHECK = 5;
+			//const int SONIC_CHECK = 5;
 			SonicData sonicCheck[SONIC_CHECK];
 			bool sonicValid;
 			for (int i = 0; i < SONIC_CHECK; i++)
@@ -100,7 +100,7 @@ void robot::AutonomousPeriodic()
 			std::cout << sonicValid << " ";
 			
 			//make decision*/
-			if (sonicValid)
+			/*if (sonicValid)
 			{
 				pult->setState(launch);
 				done = true;
@@ -122,7 +122,7 @@ void robot::AutonomousPeriodic()
 	}
 	
 	feed();
-	std::cout << done << std::endl;
+	std::cout << done << std::endl;*/
 }
 /////////////////////////////////////////////////////////////////////////
 void robot::TeleopInit()
@@ -187,7 +187,7 @@ void robot::dashSend()
 	SmartDashboard::PutBoolean("Trigger", pult->getTriggerStatus());
 	
 	SonicData sonicIn = sonicRead();
-	std::cout << setw(10) << "ULTRASONIC IN: " << sonicIn.avg << std::endl;
+	cout << setw(10) << "ULTRASONIC IN: " << sonicIn.avg << endl;
 	SmartDashboard::PutNumber("ULTRASONIC IN", sonicIn.avg);
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicIn.hotZone);
 }
@@ -199,25 +199,21 @@ SonicData robot::sonicRead()
 	const int TOO_FAR = 74;
 	const int TOO_CLOSE = 66;
 	
-	//forward is fire
-	//reverse is too far
-	//off is too close
-	Relay tooFarLight(2, Relay::kForwardOnly);
-	Relay hotZoneLight(3, Relay::kForwardOnly);
-	
 	static long double sonicLog[SONIC_SAMPLE];
 	SonicData out;
 	out.avg = 0;
 	
-	//shift sonicLog data
-	sonicLog[SONIC_SAMPLE - 1] = sonicLog[SONIC_SAMPLE - 2];//shift last value
-	for (int i = 1; i < SONIC_SAMPLE - 1; i++)//shift mid values
-		sonicLog[i] = sonicLog[i - 1];
-	sonicLog[0] = sonic->GetVoltage() / VOLTS_INCH;//add new 1st value
+	//collect data
+	for (int i = 0; i < SONIC_SAMPLE; i++)
+		sonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
 	
-	//get the average of sonicLog
+	//get the average of sonicLog and double-check for low values
 	for(int i = 0; i < SONIC_SAMPLE; i++)
+	{
+		if (sonicLog[i] < 25)
+			sonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
 		out.avg += sonicLog[i];
+	}
 	out.avg /= SONIC_SAMPLE;
 	
 	//Check for hot zone
@@ -226,19 +222,6 @@ SonicData robot::sonicRead()
 		out.hotZone = true;
 	else
 		out.hotZone = false;
-	
-	//run indicator lights
-	/*if (out.hotZone)
-		hotZoneLight.Set(Relay::kOn);
-	else if (out.avg >= TOO_FAR)
-		tooFarLight.Set(Relay::kOn);
-	else
-	{
-		hotZoneLight.Set(Relay::kOff);
-		tooFarLight.Set(Relay::kOff);
-	}
-	
-	tooFarLight.Set(Relay::kOn);*/
 	
 	return out;
 }
