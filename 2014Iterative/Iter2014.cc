@@ -38,6 +38,7 @@ void robot::RobotInit()
 	for (int i = 0; i < SONIC_SAMPLE * 2; i++)
 		sonicRead();
 	feed();
+	comp->Start();
 }
 
 void robot::AutonomousInit()
