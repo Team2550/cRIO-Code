@@ -3,8 +3,8 @@
 Drive::Drive()
 {
 	//motor creation
-	left = new Victor(1);
-	right = new Victor(2);
+	left = new Jaguar(1);
+	right = new Jaguar(2);
 	speedMult = .65;
 }
 Drive::~Drive()

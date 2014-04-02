@@ -16,8 +16,8 @@ class Drive
 		float getSpeedMult();
 	private:
 		//left and right Drive motors
-		Victor* left;
-		Victor* right;
+		Jaguar* left;
+		Jaguar* right;
 		float speedMult;//speed multiplier
 };
 
