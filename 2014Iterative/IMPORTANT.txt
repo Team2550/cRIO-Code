@@ -1,0 +1,6 @@
+Robot Drive:
+96in/2s going straight (.5, .45)
+
+Ultrasonic Hot Zone:
+MIN - 60in
+MAX - 120in
