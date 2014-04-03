@@ -67,68 +67,10 @@ void robot::AutonomousInit()
 
 void robot::AutonomousPeriodic()
 {
-	/*static bool done;
-	if (done == false)
-	{
-		if (sonicRead().hotZone == true)
-		{
-			move->stop();
-			bool sonicValid = false;
-			if (sonicRead().hotZone == true)
-				sonicValid = true;
-			//init and collect data
-			//const int SONIC_CHECK = 5;
-			SonicData sonicCheck[SONIC_CHECK];
-			bool sonicValid;
-			for (int i = 0; i < SONIC_CHECK; i++)
-				sonicCheck[i] = sonicRead();
-			feed();
-			
-			//analyze data
-			bool runChecks = true;
-			int i = SONIC_CHECK - 1;
-			while (i >= 0 && runChecks == true)
-			{
-				if (sonicCheck[i].hotZone != true)
-				{
-					sonicValid = false;
-					runChecks = false;
-				}
-				i--;
-				feed();
-			}
-			
-			std::cout << sonicValid << " ";
-			
-			//make decision*/
-			/*if (sonicValid)
-			{
-				pult->setState(launch);
-				done = true;
-			}
-			else
-				done = false;
-		}
-		else
-		{
-			move->move(.25, .2);
-			done = false;
-		}
-		feed();
-	}
-	else
-	{
-		move->stop();
-		dashSend();
-	}
-	
-	feed();
-	std::cout << done << std::endl;*/
 }
 /////////////////////////////////////////////////////////////////////////
 void robot::TeleopInit()
 {
-
 }
 
 void robot::TeleopPeriodic()
@@ -158,8 +100,7 @@ void robot::TeleopPeriodic()
 }
 ///////////////////////////////////////////////////////////////////
 void robot::DisabledInit()
-{
-	
+{	
 }
 
 void robot::DisabledPeriodic()
@@ -189,7 +130,7 @@ void robot::dashSend()
 	
 	SonicData sonicIn = sonicRead();
 	cout << setw(10) << "ULTRASONIC IN: " << sonicIn.avg << endl;
-	SmartDashboard::PutNumber("ULTRASONIC IN", sonicIn.avg);
+	//SmartDashboard::PutNumber("ULTRASONIC IN", sonicIn.avg);
 	SmartDashboard::PutBoolean("LAUNCH ZONE", sonicIn.hotZone);
 }
 
@@ -197,8 +138,9 @@ void robot::dashSend()
 //Updates sonicHotZone
 SonicData robot::sonicRead()
 {
-	const int TOO_FAR = 74;
-	const int TOO_CLOSE = 66;
+    //Ultrasonic hot zone
+	const int TOO_FAR = 120;
+	const int TOO_CLOSE = 60;
 	
 	static long double sonicLog[SONIC_SAMPLE];
 	SonicData out;
@@ -208,7 +150,7 @@ SonicData robot::sonicRead()
 	for (int i = 0; i < SONIC_SAMPLE; i++)
 		sonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
 	
-	//get the average of sonicLog and double-check for low values
+	//get the average of sonicLog
 	for(int i = 0; i < SONIC_SAMPLE; i++)
 	{
 		if (sonicLog[i] < 25)
