@@ -33,11 +33,13 @@ robot::~robot()
 /////////////////////////////////////////////////////////////
 void robot::RobotInit()
 {
-	//fill the ultrasonic sensor array so that averaging
-	//is accurate
+	//fill the ultrasonic sensor data array
 	for (int i = 0; i < SONIC_SAMPLE * 2; i++)
 		sonicRead();
 	feed();
+	
+	//Start the compressor, note that it will
+	//not run until the robot is enabled
 	comp->Start();
 }
 
@@ -71,6 +73,10 @@ void robot::AutonomousPeriodic()
 /////////////////////////////////////////////////////////////////////////
 void robot::TeleopInit()
 {
+    //figured it would be good to flush sonicLog[] again
+    for (int i = 0; i < SONIC_SAMPLE * 2; i++)
+		sonicRead();
+	feed();
 }
 
 void robot::TeleopPeriodic()
@@ -138,30 +144,33 @@ void robot::dashSend()
 //Updates sonicHotZone
 SonicData robot::sonicRead()
 {
-    //Ultrasonic hot zone
-	const int TOO_FAR = 120;
-	const int TOO_CLOSE = 60;
-	
-	static long double sonicLog[SONIC_SAMPLE];
 	SonicData out;
 	out.avg = 0;
 	
-	//collect data
-	for (int i = 0; i < SONIC_SAMPLE; i++)
-		sonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
+	//shift sonicLog data
+	sonicLog[SONIC_SAMPLE - 1] = sonicLog[SONIC_SAMPLE - 2];//shift last value
+	for (int i = 1; i <= SONIC_SAMPLE - 2; i++)//shift mid values
+		sonicLog[i] = sonicLog[i - 1];
+	//add new 1st value
+	long double localAvg = 0;
+	long double localSonicLog[10];
+	for (int i = 0; i < 10; i++)
+	{
+	    localSonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
+	    localAvg += sonicData[i];
+	    feed();
+	}
+	localAvg /= 10;
+	sonicLog[0] = localAvg;
 	
 	//get the average of sonicLog
 	for(int i = 0; i < SONIC_SAMPLE; i++)
-	{
-		if (sonicLog[i] < 25)
-			sonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
 		out.avg += sonicLog[i];
-	}
 	out.avg /= SONIC_SAMPLE;
 	
 	//Check for hot zone
-	if (out.avg > TOO_CLOSE
-		&& out.avg < TOO_FAR)
+	if (out.avg >= TOO_CLOSE
+		&& out.avg <= TOO_FAR)
 		out.hotZone = true;
 	else
 		out.hotZone = false;
