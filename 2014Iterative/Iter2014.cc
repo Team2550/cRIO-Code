@@ -43,27 +43,21 @@ void robot::RobotInit()
 	comp->Start();
 }
 
+////////////////////////////////////////////////////////////////
 void robot::AutonomousInit()
 {
-	//pult->setState(triggerBack);
-	//elChuro->autoRun(1);
-	//feed();
-	//Wait(.5);
-	//pult->setState(load);
+	pult->setState(triggerBack);
+	elChuro->autoRun(1);
+	pult->setState(load);
 	feed();
-	//elChuro->autoRun(0);
+	Wait(.5);
+	feed();
+	elChuro->autoRun(0);
 	feed();
 	
 	//Drive
-	//96in/2s
-	move->move(.5, .45);
-	for (int i = 0; i < 20; i++)//wait with feed
-	{
-		Wait(.1);
-		feed();
-	}
-	move->stop();
-	//pult->setState(launch);
+	driveStraight(.5, 90)
+	pult->setState(launch);
 	feed();
 }
 
@@ -178,5 +172,60 @@ SonicData robot::sonicRead()
 	return out;
 }
 
+/**@fn int robot::driveStraight(float minSpeed, float distInches)
+   @param minSpeed The minimum speed for either motor to travel
+   @param distInches The distance to travel in inches
+   @return 0 for successful exit
+
+   This function drives the robot either forward or backwards and attempts
+   to make it drive a straight as possible. The right motor moves .05 slower
+   than the left. (-) speed makes the robot drive backwards. The slowest this
+   function will allow in any direction is .1: if something between .1 and -.1
+   is given, it will automatically be changed. Also, if the minSpeed (the speed
+   of the right motor) is too fast, it will automatically adjust so that the
+   left motor goes as fast as possible. The function also takes watchdog into
+   consideration. It uses the conversion factor 96in/2s @ speed (.5, .45).
+   
+   NOTE: as the distance increases the accuracy decreases due to floating point
+   operations.
+*/
+int robot::driveStraight(double minSpeed, double distInches)
+{
+    //run value checks
+    if (minSpeed < .1 && minSpeed > -.1)
+    {
+        if (minSpeed > 0)
+            minSpeed += (.1 - minSpeed) //.1 = minSpeed + x
+        else if (minSpeed < 0)
+            minSpeed -= (.1 + minSpeed)//-.1 = minSpeed - x -> x = .1 + minSpeed
+    }
+    if (minSpeed > .95)
+        minSpeed = .95
+    else if (minSpeed < -.95)
+        minSpeed = -.95
+        
+    //velocity proportion
+    double vel = (48 * minSpeed) / .45; // in/s
+    //get the travel time @ given speed
+    double time = distInches / vel; // s
+    
+    //deal with watchdog
+    feed();
+    const double wdExpire = GetWatchdog().GetExpiration();
+    GetWatchdog().SetExpiration(time);
+    //run motors
+    if (minSpeed > 0)
+    	move->move(minSpeed + .05, minSpeed);
+    else if (minSpeed < 0)
+        move->move(minSpeed - .05, minSpeed);
+    else
+    {
+        move->stop();
+        return 0;
+    }
+	GetWatchdog().SetExpiration(wdExpire);
+	move->stop();
+	feed();
+}
 
 START_ROBOT_CLASS(robot);

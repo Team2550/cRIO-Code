@@ -6,6 +6,12 @@
 
 class Drive
 {
+    private:
+		//left and right Drive motors
+		Jaguar* left;
+		Jaguar* right;
+		float speedMult;//speed multiplier
+		
 	public:
 		Drive();
 		~Drive();
@@ -14,11 +20,6 @@ class Drive
 		void remoteDrive(float leftStick, float rightStick, bool boost);
 		void stop();
 		float getSpeedMult();
-	private:
-		//left and right Drive motors
-		Jaguar* left;
-		Jaguar* right;
-		float speedMult;//speed multiplier
 };
 
 #endif

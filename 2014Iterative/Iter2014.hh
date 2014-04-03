@@ -35,6 +35,7 @@ class robot : public IterativeRobot
 		
 		//motors
 		Drive* move;
+		int driveStraight(float minSpeed, float distInches);
 		Lift* elChuro;//the ball lift... nicknamed El Churo by mistake
 		
 		//PNEUMATICS
