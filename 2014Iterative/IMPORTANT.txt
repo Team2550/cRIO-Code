@@ -4,3 +4,9 @@ Robot Drive:
 Ultrasonic Hot Zone:
 MIN - 60in
 MAX - 120in
+
+AUTONOMOUS: robot needs to travel 110in
+
+From white line to far wall is 216in
+
+Optimal distance for shot: 117in
