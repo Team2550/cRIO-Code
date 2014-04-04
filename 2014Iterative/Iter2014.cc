@@ -49,14 +49,26 @@ void robot::AutonomousInit()
 	pult->setState(triggerBack);
 	elChuro->autoRun(1);
 	pult->setState(load);
-	feed();
-	Wait(.5);
-	feed();
+	for (int i = 0; i < 10; i++)
+	{
+		Wait(.1);
+		feed();
+	}
 	elChuro->autoRun(0);
+	elChuro->autoRun(-1);
 	feed();
 	
 	//Drive
-	driveStraight(.5, 90)
+	driveStraight(.5, 120);
+	move->move(-.6, -.55);
+	Wait(.1);
+	move->stop();
+	for (int i = 0; i < 15; i++)
+	{
+		Wait(.1);
+		feed();
+	}
+	elChuro->autoRun(0);
 	pult->setState(launch);
 	feed();
 }
@@ -67,6 +79,9 @@ void robot::AutonomousPeriodic()
 /////////////////////////////////////////////////////////////////////////
 void robot::TeleopInit()
 {
+	//clear the console
+	for (int i = 0; i < 100; i++)
+		cout << endl;
     //figured it would be good to flush sonicLog[] again
     for (int i = 0; i < SONIC_SAMPLE * 2; i++)
 		sonicRead();
@@ -100,7 +115,9 @@ void robot::TeleopPeriodic()
 }
 ///////////////////////////////////////////////////////////////////
 void robot::DisabledInit()
-{	
+{
+	for (int i = 0; i < 100; i++)
+		cout << endl;
 }
 
 void robot::DisabledPeriodic()
@@ -136,6 +153,7 @@ void robot::dashSend()
 
 //Averages and returns the inch reading of the ultrasonic sensor
 //Updates sonicHotZone
+
 SonicData robot::sonicRead()
 {
 	SonicData out;
@@ -146,16 +164,7 @@ SonicData robot::sonicRead()
 	for (int i = 1; i <= SONIC_SAMPLE - 2; i++)//shift mid values
 		sonicLog[i] = sonicLog[i - 1];
 	//add new 1st value
-	long double localAvg = 0;
-	long double localSonicLog[10];
-	for (int i = 0; i < 10; i++)
-	{
-	    localSonicLog[i] = sonic->GetVoltage() / VOLTS_INCH;
-	    localAvg += sonicData[i];
-	    feed();
-	}
-	localAvg /= 10;
-	sonicLog[0] = localAvg;
+	sonicLog[0] = sonic->GetVoltage() / VOLTS_INCH;
 	
 	//get the average of sonicLog
 	for(int i = 0; i < SONIC_SAMPLE; i++)
@@ -189,20 +198,20 @@ SonicData robot::sonicRead()
    NOTE: as the distance increases the accuracy decreases due to floating point
    operations.
 */
-int robot::driveStraight(double minSpeed, double distInches)
+void robot::driveStraight(double minSpeed, double distInches)
 {
     //run value checks
     if (minSpeed < .1 && minSpeed > -.1)
     {
         if (minSpeed > 0)
-            minSpeed += (.1 - minSpeed) //.1 = minSpeed + x
+            minSpeed += (.1 - minSpeed); //.1 = minSpeed + x
         else if (minSpeed < 0)
-            minSpeed -= (.1 + minSpeed)//-.1 = minSpeed - x -> x = .1 + minSpeed
+            minSpeed -= (.1 + minSpeed);//-.1 = minSpeed - x -> x = .1 + minSpeed
     }
     if (minSpeed > .95)
-        minSpeed = .95
+        minSpeed = .95;
     else if (minSpeed < -.95)
-        minSpeed = -.95
+        minSpeed = -.95;
         
     //velocity proportion
     double vel = (48 * minSpeed) / .45; // in/s
@@ -212,19 +221,16 @@ int robot::driveStraight(double minSpeed, double distInches)
     //deal with watchdog
     feed();
     const double wdExpire = GetWatchdog().GetExpiration();
-    GetWatchdog().SetExpiration(time);
+    GetWatchdog().SetExpiration(time + .5);
     //run motors
     if (minSpeed > 0)
     	move->move(minSpeed + .05, minSpeed);
     else if (minSpeed < 0)
         move->move(minSpeed - .05, minSpeed);
     else
-    {
         move->stop();
-        return 0;
-    }
+    Wait(time);
 	GetWatchdog().SetExpiration(wdExpire);
-	move->stop();
 	feed();
 }
 

@@ -12,8 +12,8 @@ const int DRIVER_PORT = 1;
 const int PULT_CTRL_PORT = 2;
 
 //Ultrasonic Sensor
-const int TOO_FAR = 120;
-const int TOO_CLOSE = 60;
+const int TOO_FAR = 135;
+const int TOO_CLOSE = 65;
 const double VOLTS_INCH = 0.009765625;//5/512
 const int SONIC_SAMPLE = 10;
 
@@ -35,7 +35,7 @@ class robot : public IterativeRobot
 		
 		//motors
 		Drive* move;
-		int driveStraight(float minSpeed, float distInches);
+		void driveStraight(double minSpeed, double distInches);
 		Lift* elChuro;//the ball lift... nicknamed El Churo by mistake
 		
 		//PNEUMATICS
