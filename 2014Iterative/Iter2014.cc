@@ -49,7 +49,7 @@ void robot::AutonomousInit()
 	pult->setState(triggerBack);
 	elChuro->autoRun(1);
 	pult->setState(load);
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Wait(.1);
 		feed();
@@ -58,8 +58,8 @@ void robot::AutonomousInit()
 	elChuro->autoRun(-1);
 	feed();
 	
-	//Drive
-	driveStraight(.5, 120);
+	//Drive ~120in
+	driveStraight(.25, 120);
 	move->move(-.6, -.55);
 	Wait(.1);
 	move->stop();
